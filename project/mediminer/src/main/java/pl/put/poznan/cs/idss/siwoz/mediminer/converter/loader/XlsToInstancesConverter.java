@@ -22,7 +22,7 @@ public class XlsToInstancesConverter implements IToInstancesConverter {
 		File csvFile = parseXlsToCsv(fileName);
 		Instances instances = converter.parseToInstances(csvFile
 				.getAbsolutePath());
-		csvFile.delete();
+		//csvFile.deleteOnExit();
 		return instances;
 	}
 
@@ -35,7 +35,7 @@ public class XlsToInstancesConverter implements IToInstancesConverter {
 		// For storing data into CSV files
 		StringBuffer data = new StringBuffer();
 		String path  = fileName.split("\\.")[0] +  ".csv";
-	//	System.out.println(path);
+		System.out.println(path);
 		File csvFile = new File(path);
 		
 		if (!csvFile.exists()) {
