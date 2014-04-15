@@ -2,4 +2,82 @@
 
 body {
 	margin: 0px;
+	padding: 40px;
+	background-color: #EEEEEE;
+	background-image: url('../images/background.png');
+	background-position: top center;
+	background-repeat: no-repeat;
+	font-family: 'Overlock', cursive;
+}
+
+header {
+	margin: 0 auto;
+	background-color: rgba(35, 35, 35, 0.85);
+	color: #FAFAFA;
+	padding: 20px 0px 0px 0px;
+}
+
+header h1 {
+	margin: 0px;
+	float: left;
+	margin-left: 20px;
+	margin-bottom: 15px;
+}
+
+header h2 {
+	margin: 0px;
+	float: left;
+	margin-left: 30px;
+	margin-top: 8px;
+}
+
+header nav {
+	float: right;
+	height: 55px;
+	margin-right: 10px;
+}
+
+header nav ul {
+	display: inline;
+}
+
+header nav ul li {
+	display: inline;
+	padding: 35px 20px 21px 20px;
+	position: relative;
+	top: 15px;
+	transition-duration: 0.1s;
+	margin-left: -4px;
+}
+
+header nav ul li:hover {
+	background-color: #EEEEEE;
+	color: #343434;
+	cursor: pointer;
+	transition-duration: 0.6s;
+}
+
+div#tip {
+	clear: both;
+	background-color: rgba(248, 248, 248, 0.95);
+	border-bottom: 1px solid #C0C0C0;
+	padding: 20px;
+	color: #787878;
+}
+
+div#main_part {
+	background-color: rgba(251, 251, 251, 0.85);
+	min-height: 500px;
+	padding: 20px;
+}
+
+footer {
+	color: #F0F0F0;
+	text-align: center;
+	padding: 20px;
+}
+
+
+.dn {
+	display: none;
 }
