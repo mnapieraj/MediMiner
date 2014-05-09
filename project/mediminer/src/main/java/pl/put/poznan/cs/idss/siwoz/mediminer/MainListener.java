@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.MainResourceHandler;
+import pl.put.poznan.cs.idss.siwoz.mediminer.handler.RestHandler;
 
 public class MainListener {
 
@@ -30,8 +31,12 @@ public class MainListener {
 			contextPage.setContextPath("/");
 			contextPage.setHandler(new MainResourceHandler());
 
+			ContextHandler contextRest = new ContextHandler();
+			contextRest.setContextPath("/rest");
+			contextRest.setHandler(new RestHandler());
+
 			ContextHandlerCollection contexts = new ContextHandlerCollection();
-			contexts.setHandlers(new Handler[] { contextPage });
+			contexts.setHandlers(new Handler[] { contextPage, contextRest });
 
 			server.setHandler(contexts);
 

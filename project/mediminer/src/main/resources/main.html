@@ -19,7 +19,8 @@
 
 	<div class="dn" id="hidden_inputs">
 
-		<form id="open_file_form" method="post" action="/rest/open-file">
+		<form id="open_file_form" method="post"
+			action="/rest/?action=import-file" enctype="multipart/form-data">
 			<input type="file" class="dn" name="file_to_open" id="file_to_open">
 		</form>
 
@@ -27,25 +28,53 @@
 
 	<header>
 		<h1>MediMiner</h1>
-		<h2>Simple data-mining tool for medical purposes</h2>
-		<nav>
-			<ul>
-				<li id="b_load_file">Load file</li>
-				<li id="b_learn">Learn from data</li>
-				<li id="b_save_state">Save state</li>
-			</ul>
-		</nav>
-		<div id="tip">If you don't know how any option works, move
-			cursor on the button and wait for tooltip (little comics bubble with
-			description).</div>
+		<h2>
+			Simple data-mining tool for medical purposes<br> <small>Kornel
+				Lewandowski & Malgorzata Napieraj, 2014 </small>
+		</h2>
+		<div class="cb"></div>
 	</header>
 
-	<div id="main_part"></div>
-	
-	<footer>
-		Kornel Lewandowski & Malgorzata Napieraj<br>
-		2014
-	</footer>
+	<div id="error-box" class="dn"></div>
+	<div id="success-box" class="dn"></div>
+
+	<div id="main_part">
+
+		<div id="menu">
+			<nav>
+				<ul>
+					<li id="import-data" class="bubble-right">Import data</li>
+					<li id="load-model" class="bubble-right">Load model</li>
+					<li id="save-model" class="bubble-right">Save model</li>
+					<li id="export-data-arff" class="bubble-right">Export to ARFF</li>
+					<li id="export-data-csv" class="bubble-right">Export to CSV</li>
+					<li id="export-data-xls" class="bubble-right">Export to XLS</li>
+				</ul>
+			</nav>
+		</div>
+
+
+		<div id="data">
+
+
+			<div id="tip">If you don't know how any option works, move
+				cursor on the button and wait for tooltip (little comic's bubble
+				with description).</div>
+
+			<table id="data-table" class="dn">
+				<thead>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+
+		</div>
+
+		<div class="cb"></div>
+
+	</div>
+
+	<footer> Version 1.0.2 </footer>
 
 </body>
 
