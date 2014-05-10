@@ -29,6 +29,11 @@ $(document).ready(function() {
 	$('form#open_file_form').submit();
     });
 
+    $('.build').click(function(e) {
+	e.preventDefault();
+	actions.buildClassifier($(this).attr('classifier'));
+    });
+
     if (!actions.handleError()) {
 
 	actions.loadHeaders();
@@ -211,4 +216,23 @@ Actions.prototype.downloadXls = function() {
 	console.log(b);
     });
 
+}
+
+Actions.prototype.buildClassifier = function(classifier) {
+
+    var actions = this;
+
+    var option = $('#option-' + classifier).val();
+
+    $.ajax({
+	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
+	context : document.body
+    }).done(function(data) {
+	actions.showSuccess("Classifier is ready.");
+    }).error(function(err, a, b) {
+	actions.showError("Classifier building failed");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
 }

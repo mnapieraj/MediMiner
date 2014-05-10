@@ -149,7 +149,7 @@ table#data-table {
 	margin: 0px;
 	border-collapse: separate;
 	border-spacing: 0px;
-/* 	border: 1px solid #898989; */
+	/* 	border: 1px solid #898989; */
 	border-collapse: separate;
 }
 
@@ -163,6 +163,7 @@ table#data-table th {
 	border-bottom: 1px solid #898989;
 	font-size: 14pt;
 	color: #F0F0F0;
+	border-bottom: 1px solid #898989;
 }
 
 table#data-table td {
@@ -183,6 +184,7 @@ div#table-container {
 	margin: 10px;
 	float: left;
 	width: calc(100% - 20px);
+	margin: 10px;
 }
 
 div#table-container-outer {
@@ -213,12 +215,71 @@ th>div {
 	-ms-transform: rotate(270deg); /* IE 9 */
 	-webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
 	transform: rotate(270deg);
-	overflow: hidden; white-space : nowrap; /* Don't forget this one */
-	text-overflow : ellipsis;
+	overflow: hidden;
+	white-space: nowrap; /* Don't forget this one */
+	text-overflow: ellipsis;
 	-ms-transform: rotate(270deg);
 	-ms-transform: rotate(270deg);
 	white-space: nowrap; /* Don't forget this one */
 	text-align: left;
+	-ms-transform: rotate(270deg);
+}
+
+div.tool {
+	padding: 0px;
+	background-color: #989898;
+	color: #FAFAFA;
+	text-align: right;
+	margin-bottom: 8px;
+	opacity: 0.75;
+	transition-duration: 1.2s;
+}
+
+div.tool:hover {
+	opacity: 1.0;
+	transition-duration: 0.4s;
+}
+
+div.tool h3 {
+	margin: 0 auto;
+	text-align: center;
+	padding: 10px;
+}
+
+div.tool .options {
+	background-color: #C0C0C0;
+	text-align: left;
+	padding: 10px;
+}
+
+div.tool .options label {
+	float: left;
+	font-size: 14pt;
+}
+
+div.tool .options select {
+	float: right;
+	padding: 4px;
+	margin: 0px;
+	border: none;
+	background-color: #FFFFFF;	
+} 
+
+div.tool .build {
+	border: none;
+	background: none;
+	color: #FEFEFE;
+	padding: 5px;
+	padding-left: 32px;
+	background-image: url('../images/hammer.png');
+	background-repeat: no-repeat;
+	background-position: 10px 7px;
+	font-size: 14pt;
+	opacity: 0.8;
+}
+
+div.tool .build:hover {
+	opacity: 1.0;
 }
 
 footer {
@@ -233,4 +294,12 @@ footer {
 
 .dn {
 	display: none;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
 }
