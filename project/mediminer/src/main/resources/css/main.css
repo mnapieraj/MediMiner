@@ -145,27 +145,81 @@ div#main_part {
 }
 
 table#data-table {
-	width: 80%;
-	margin: 20px;
+	width: 100%;
+	margin: 0px;
 	border-collapse: separate;
 	border-spacing: 0px;
+/* 	border: 1px solid #898989; */
+	border-collapse: separate;
 }
 
 table#data-table th {
-	color: #343434;
-	background-color: #EEEEEE;
-	padding: 10px;
-	border-bottom: 1px #BCBCBC;
+	height: 100px;
+	color: #F0F0F0;
+	background-color: #909090;
+	padding: 0px;
+	padding-bottom: 15px;
+	padding-top: 15px;
+	border-bottom: 1px solid #898989;
+	font-size: 14pt;
+	color: #F0F0F0;
 }
 
 table#data-table td {
 	color: #565656;
 	background-color: #FAFAFA;
 	padding: 10px;
-	border-bottom: 1px #DDDDDD;
+	border-bottom: 1px solid #DDDDDD;
 	text-align: center;
+	font-size: 10pt;
 }
 
+div#table-container {
+	height: 500px;
+	overflow: hidden;
+	padding: 0px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	margin: 10px;
+	float: left;
+	width: calc(100% - 20px);
+}
+
+div#table-container-outer {
+	height: 510px;
+	overflow: hidden;
+	padding: 0px;
+	margin: 0px;
+	width: 80%;
+	float: left;
+	padding: 10px;
+	background-color: #FFFFFF;
+	border-bottom: 10px solid #FFFFFF;
+}
+
+div#toolbox {
+	width: calc(20% - 40px);
+	height: 520px;
+	padding: 10px;
+	margin: 0px;
+	background-color: #FAFAFA;
+	float: right;
+}
+
+th>div {
+	height: 25px;
+	width: 100px;
+	margin: 0px;
+	-ms-transform: rotate(270deg); /* IE 9 */
+	-webkit-transform: rotate(270deg); /* Chrome, Safari, Opera */
+	transform: rotate(270deg);
+	overflow: hidden; white-space : nowrap; /* Don't forget this one */
+	text-overflow : ellipsis;
+	-ms-transform: rotate(270deg);
+	-ms-transform: rotate(270deg);
+	white-space: nowrap; /* Don't forget this one */
+	text-align: left;
+}
 
 footer {
 	color: #F0F0F0;
