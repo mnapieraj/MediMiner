@@ -32,6 +32,10 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.DiscretizePreprocessor
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.IPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
+import weka.classifiers.bayes.NaiveBayes;
+import weka.classifiers.lazy.IBk;
+import weka.classifiers.rules.DTNB;
+import weka.classifiers.trees.J48;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -64,6 +68,11 @@ public class RestHandler extends AbstractHandler {
 	private String currentDataFileName = null;
 	private String currentModelFileName = null;
 	private Instances instancesContainer = null;
+
+	private NaiveBayes naiveBayesClassifier = null;
+	private J48 j48Classifier = null;
+	private IBk ibkClassifier = null;
+	private DTNB dtnbClassifier = null;
 
 	public void handle(String target, Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response)
@@ -119,6 +128,13 @@ public class RestHandler extends AbstractHandler {
 
 				normalize(request, response);
 
+			} else if (action.equals("build")) {
+
+				String classifier = params.get("classifier")[0];
+				String option = params.get("option")[0];
+
+				buildClassifier(request, response, classifier, option);
+
 			} else {
 
 				returnError(request, response, params, "Action not supported!");
@@ -139,7 +155,6 @@ public class RestHandler extends AbstractHandler {
 			instancesContainer = preprocessor.preprocessForAttrNumbers(instancesContainer, null);
 			getInstances(request, response);
 		} catch (Exception e) {
-			e.printStackTrace();
 			returnError(request, response, null, "Normalize error");
 			((Request) request).setHandled(true);
 		}
@@ -171,7 +186,6 @@ public class RestHandler extends AbstractHandler {
 
 		} catch (Exception e) {
 			returnError(request, response, null, "Discretize error");
-			e.printStackTrace();
 		}
 		((Request) request).setHandled(true);
 
@@ -401,6 +415,59 @@ public class RestHandler extends AbstractHandler {
 
 		((Request) request).setHandled(true);
 
+	}
+
+	private void buildClassifier(HttpServletRequest request,
+			HttpServletResponse response, String classifier, String option) {
+		try {
+
+			if ("naive-bayes".equals(classifier)) {
+
+				naiveBayesClassifier = new NaiveBayes();
+				if ("yes".equals(option)) {
+					naiveBayesClassifier.setOptions(new String[] { "-K" });
+				}
+				naiveBayesClassifier.buildClassifier(instancesContainer);
+				response.getWriter().println(naiveBayesClassifier.toString());
+
+			} else if ("j48".equals(classifier)) {
+
+				j48Classifier = new J48();
+				if (option != null) {
+					j48Classifier.setOptions(new String[] { "-C", option });
+				}
+				j48Classifier.buildClassifier(instancesContainer);
+				response.getWriter().println(j48Classifier.toString());
+
+			} else if ("ibk".equals(classifier)) {
+
+				ibkClassifier = new IBk();
+				if (option != null) {
+					ibkClassifier.setOptions(new String[] { "-K", option });
+				}
+				ibkClassifier.buildClassifier(instancesContainer);
+				response.getWriter().println(ibkClassifier.toString());
+
+			} else if ("dtnb".equals(classifier)) {
+
+				dtnbClassifier = new DTNB();
+				if (option != null) {
+					dtnbClassifier.setOptions(new String[] { "-E", option });
+				}
+				dtnbClassifier.buildClassifier(instancesContainer);
+				response.getWriter().println(dtnbClassifier.toString());
+
+			} else {
+				throw new Exception("Incorrect classifier name");
+			}
+
+		} catch (Exception e) {
+			response.setContentType("text/plain");
+			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			((Request) request).setHandled(true);
+		}
+
+		((Request) request).setHandled(true);
 	}
 
 }

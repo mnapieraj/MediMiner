@@ -62,13 +62,13 @@
 				cursor on the button and wait for tooltip (little comic's bubble
 				with description).</div>
 			
-			<ul id=toolbox>
-				<li>Select attributes...</li>
-				<li id="discretize">Discretize</li>		
-				<li id="normalize">Normalize</li>				
-			</ul>
 
 			<div id="table-container-outer">
+				<ul id=preprocessToolbox>
+					<li>Select attributes... - nie klikac, nic to nie da.</li>
+					<li id="discretize">Discretize</li>		
+					<li id="normalize">Normalize</li>				
+				</ul>
 				<div id="table-container">
 					<table id="data-table" class="dn">
 						<thead>
@@ -81,6 +81,85 @@
 				</div>
 			</div>
 
+
+			<div id="toolbox">
+
+				<div class="tool">
+					<h3>Naive Bayes Classifier</h3>
+					<div class="options">
+						<label>Estimate kernel?</label> <select id="option-naive-bayes">
+							<option value="yes">Yes</option>
+							<option value="no">No</option>
+						</select>
+						<div class="cb"></div>
+					</div>
+					<button class="classify dn" id="classify-naive-bayes"
+						classifier="naive-bayes">Classify</button>
+					<button class="build" id="build-naive-bayes"
+						classifier="naive-bayes">Build</button>
+				</div>
+
+				<div class="tool">
+					<h3>J48 Classifier</h3>
+					<div class="options">
+						<label>Confidence level</label> <select id="option-j48">
+							<option value="0.01">0.01</option>
+							<option value="0.02">0.02</option>
+							<option value="0.03">0.03</option>
+							<option value="0.04">0.04</option>
+							<option value="0.05">0.05</option>
+							<option value="0.10">0.10</option>
+							<option value="0.15">0.15</option>
+							<option value="0.20">0.20</option>
+							<option value="0.25">0.25</option>
+							<option value="0.30">0.30</option>
+							<option value="0.35">0.35</option>
+							<option value="0.40">0.40</option>
+							<option value="0.50">0.50</option>
+							<option value="0.60">0.60</option>
+							<option value="0.70">0.70</option>
+						</select>
+						<div class="cb"></div>
+					</div>
+					<button class="classify dn" id="classify-j48" classifier="j48">Classify</button>
+					<button class="build" id="build-j48" classifier="j48">Build</button>
+				</div>
+
+				<div class="tool">
+					<h3>IBk Classifier</h3>
+					<div class="options">
+						<label>Neighbours</label> <select id="option-ibk">
+							<option value="1">1</option>
+							<option value="3">3</option>
+							<option value="5">5</option>
+							<option value="7">7</option>
+							<option value="9">9</option>
+							<option value="11">11</option>
+							<option value="13">13</option>
+							<option value="15">15</option>
+							<option value="17">17</option>
+						</select>
+						<div class="cb"></div>
+					</div>
+					<button class="classify dn" id="classify-ibk" classifier="ibk">Classify</button>
+					<button class="build" id="build-ibk" classifier="ibk">Build</button>
+				</div>
+
+				<div class="tool">
+					<h3>DTNB Classifier</h3>
+					<div class="options">
+						<label>Evalueation measure</label> <select id="option-dtnb">
+							<option value="rmse">RMSE</option>
+							<option value="mae">mae</option>
+							<option value="auc">AUC</option>
+						</select>
+						<div class="cb"></div>
+					</div>
+					<button class="classify dn" id="classify-dtnb" classifier="dtnb">Classify</button>
+					<button class="build" id="build-dtnb" classifier="dtnb">Build</button>
+				</div>
+
+			</div>
 
 
 		</div>

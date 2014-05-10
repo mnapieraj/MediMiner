@@ -4,6 +4,16 @@ $(document).ready(function() {
     
     var actions = new Actions();
     
+    $('#error-box').click(function(e) {
+	e.preventDefault();
+	$(this).fadeOut();
+    });
+
+    $('#success-box').click(function(e) {
+	e.preventDefault();
+	$(this).fadeOut();
+    });
+
     // menu buttons
     $('li#import-data').click(function(e) {
 	e.preventDefault();
@@ -29,6 +39,16 @@ $(document).ready(function() {
 	$('form#open_file_form').submit();
     });
 
+    $('.build').click(function(e) {
+	e.preventDefault();
+	actions.buildClassifier($(this).attr('classifier'));
+    });
+
+    $('.classify').click(function(e) {
+	e.preventDefault();
+	actions.classify($(this).attr('classifier'));
+    });
+
     if (!actions.handleError()) {
 
 	actions.loadHeaders();
@@ -39,17 +59,23 @@ $(document).ready(function() {
 
 function Actions() {
 	this.instances = new Instances('data-table');
-    this.initToolbox("toolbox");
+    this.initToolbox("preprocessToolbox");
 };
 
 Actions.prototype.showError = function(message) {
-    $('div#error-box').show();
+    if ($('div#error-box').is(':visible')) {
+	$('div#error-box').hide();
+    }
     $('div#error-box').html(message);
+    $('div#error-box').fadeIn();
 }
 
 Actions.prototype.showSuccess = function(message) {
-    $('div#success-box').show();
+    if ($('div#success-box').is(':visible')) {
+	$('div#success-box').hide();
+    }
     $('div#success-box').html(message);
+    $('div#success-box').fadeIn();
 }
 
 Actions.prototype.getURLParameter = function(sParam) {
@@ -213,5 +239,36 @@ Actions.prototype.downloadXls = function() {
 	console.log(a);
 	console.log(b);
     });
+
+}
+
+Actions.prototype.buildClassifier = function(classifier) {
+
+    var actions = this;
+
+    var option = $('#option-' + classifier).val();
+
+    $('#classify-' + classifier).hide();
+
+    $.ajax({
+	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
+	context : document.body
+    }).done(function(data) {
+	actions.showSuccess("Classifier is ready.");
+	$('#build-' + classifier).text('Rebuild');
+	$('#classify-' + classifier).fadeIn();
+    }).error(function(err, a, b) {
+	actions.showError("Classifier building failed");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
+}
+
+Actions.prototype.classify = function(classifier) {
+
+    var actions = this;
+
+    actions.showError("Classification for " + classifier + " is not suported yet!");
 
 }

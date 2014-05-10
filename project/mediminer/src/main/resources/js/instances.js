@@ -7,8 +7,11 @@ function Instances (tableId) {
 
 Instances.prototype.addOptionsToHeaders = function () {
 	var self = this;
+	var footTh = this.table.find("tfoot").find("th");
+	var headTh = this.table.find("thead").find("th");
 	var headers = this.table.find("th");
-	headers.prepend("<input type='checkbox'/>");
+	footTh.append("<input type='checkbox'/>");
+	headTh.prepend("<input type='checkbox'/>");
 	
 	var onHeaderSelect = function (evt) {
 		var colNumber = $(this).attr('name'), selector = ":nth-child(" + colNumber + ")";

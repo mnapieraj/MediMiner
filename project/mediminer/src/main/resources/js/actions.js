@@ -29,7 +29,7 @@ Actions.prototype.discretize = function() {
 		});
 		self.instances.modifyAttributes(attrMap);
 	}).error(function(err, a, b) {
-
+		self.showError("You have to choose at least one attribute to discretize.")
 	});
 }
 

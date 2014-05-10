@@ -10,7 +10,6 @@ table#data-table {
 
 
 table#data-table th {
-	height: 100px;
 	color: #F0F0F0;
 	background-color: #909090;
 	padding: 0px;
@@ -19,6 +18,9 @@ table#data-table th {
 	border-bottom: 1px solid #898989;
 	font-size: 14pt;
 	color: #F0F0F0;
+	min-width: 40px;
+	padding: 10px 15px;
+	text-align : center;
 }
 
 table#data-table td {
@@ -30,24 +32,14 @@ table#data-table td {
 	font-size: 10pt;
 }
 
-th>div {
-	height: 25px;
-	width: 100px;
-	margin: 0px;
-/*	-ms-transform: rotate(270deg);
-	-webkit-transform: rotate(270deg); 
-	transform: rotate(270deg);
-	-ms-transform: rotate(270deg);
-	-ms-transform: rotate(270deg); */
-	overflow: hidden; white-space : nowrap; /* Don't forget this one */
-	text-overflow : ellipsis;
-	white-space: nowrap; /* Don't forget this one */
-	text-align: left;
+input[type="checkbox"] {
+	margin: 10px;
+width: 17px;
+height: 17px;
 }
 
 
-
 table#data-table td.selected, th.selected {
-	background-color : green !important;
+	background-color : #559944 !important;
 	color : white !important;
 }

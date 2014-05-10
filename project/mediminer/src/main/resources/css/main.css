@@ -41,15 +41,17 @@ header h2 small {
 div#error-box {
 	color: #F0F0F0;
 	background-color: #DD3322;
-	padding: 5px;
+	padding: 10px;
 	border-left: 220px solid #BB4433;
+	cursor : pointer;
 }
 
 div#success-box {
 	color: #F0F0F0;
 	background-color: #44BB33;
-	padding: 5px;
+	padding: 10px;
 	border-left: 220px solid #559944;
+	cursor : pointer;
 }
 
 div#menu {
@@ -147,7 +149,7 @@ div#main_part {
 
 
 div#table-container {
-	height: 500px;
+	height: 450px;
 	overflow: hidden;
 	padding: 0px;
 	padding-right: 10px;
@@ -155,6 +157,7 @@ div#table-container {
 	margin: 10px;
 	float: left;
 	width: calc(100% - 20px);
+	margin: 10px;
 }
 
 div#table-container-outer {
@@ -178,6 +181,19 @@ div#toolbox {
 	float: right;
 }
 
+#preprocessToolbox {
+	margin: 10px;
+	padding: 0px;
+}
+
+#preprocessToolbox li {
+	display: inline-block;
+	cursor: pointer;
+	padding: 5px;
+	background-color: rgba(248, 248, 248, 0.95);
+	border: 1px solid #C0C0C0;
+}
+
 
 footer {
 	color: #F0F0F0;
@@ -191,4 +207,12 @@ footer {
 
 .dn {
 	display: none;
+}
+
+.fl {
+	float: left;
+}
+
+.fr {
+	float: right;
 }
