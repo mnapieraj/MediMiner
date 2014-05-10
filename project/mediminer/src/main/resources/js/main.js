@@ -10,6 +10,21 @@ $(document).ready(function() {
 	$('input#file_to_open').trigger('click');
     });
 
+    $('li#export-data-arff').click(function(e) {
+	e.preventDefault();
+	actions.downloadArff();
+    });
+
+    $('li#export-data-csv').click(function(e) {
+	e.preventDefault();
+	actions.downloadCsv();
+    });
+
+    $('li#export-data-xls').click(function(e) {
+	e.preventDefault();
+	actions.downloadXls();
+    });
+
     $('input#file_to_open').change(function() {
 	$('form#open_file_form').submit();
     });
@@ -105,7 +120,6 @@ Actions.prototype.loadInstances = function() {
 	context : document.body
     }).done(function(data) {
 	$.each(data, function(i, item) {
-	    console.log(item);
 	    var row = '<tr>';
 	    if (item.m_NumAttributes !== undefined) {
 		for (var i = 0; i < item.m_NumAttributes; i++) {
@@ -137,4 +151,64 @@ Actions.prototype.loadInstances = function() {
 	actions.showError("You have to open model or import any data file.");
 	console.log(err);
     });
+}
+
+Actions.prototype.downloadArff = function() {
+
+    var actions = this;
+
+    $.ajax({
+	url : 'rest?action=export-arff',
+	context : document.body
+    }).done(function(data) {
+	$('a#download-arff').attr('href', './files/' + data);
+	$('a#download-arff').get(0).click();
+	actions.showSuccess("Arff file generated.");
+    }).error(function(err, a, b) {
+	actions.showError("You can't save empty data to file.");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
+
+}
+
+Actions.prototype.downloadCsv = function() {
+
+    var actions = this;
+
+    $.ajax({
+	url : 'rest?action=export-csv',
+	context : document.body
+    }).done(function(data) {
+	$('a#download-csv').attr('href', './files/' + data);
+	$('a#download-csv').get(0).click();
+	actions.showSuccess("CSV file generated.");
+    }).error(function(err, a, b) {
+	actions.showError("You can't save empty data to file.");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
+
+}
+
+Actions.prototype.downloadXls = function() {
+
+    var actions = this;
+
+    $.ajax({
+	url : 'rest?action=export-xls',
+	context : document.body
+    }).done(function(data) {
+	$('a#download-xls').attr('href', './files/' + data);
+	$('a#download-xls').get(0).click();
+	actions.showSuccess("XLS file generated.");
+    }).error(function(err, a, b) {
+	actions.showError("You can't save empty data to file.");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
+
 }
