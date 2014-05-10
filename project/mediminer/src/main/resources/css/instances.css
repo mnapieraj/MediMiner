@@ -7,7 +7,9 @@ table#data-table {
 	border-collapse: separate;
 }
 
-
+tr:hover td{
+	background-color : rgba(15, 12, 12, 0.17) !important;
+}
 
 table#data-table th {
 	color: #F0F0F0;
@@ -15,8 +17,8 @@ table#data-table th {
 	padding: 0px;
 	padding-bottom: 15px;
 	padding-top: 15px;
-	border-bottom: 1px solid #898989;
-	font-size: 14pt;
+	/*border-bottom: 1px solid #898989;*/
+	font-size: 12pt;
 	color: #F0F0F0;
 	min-width: 40px;
 	padding: 10px 15px;
@@ -27,7 +29,7 @@ table#data-table td {
 	color: #565656;
 	background-color: #FAFAFA;
 	padding: 10px;
-	border-bottom: 1px solid #DDDDDD;
+	/* border-bottom: 1px solid #DDDDDD; */
 	text-align: center;
 	font-size: 10pt;
 }
