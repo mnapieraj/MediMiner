@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -27,6 +28,10 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.IFromInstancesConve
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToArffConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToCSVConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToXlsConverter;
+import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.DiscretizePreprocessor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.IPreprocessor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -106,6 +111,14 @@ public class RestHandler extends AbstractHandler {
 
 				exportCsv(request, response);
 
+			} else if (action.equals("discretize")) {
+
+				discretize(request, response);
+
+			} else if (action.equals("normalize")) {
+
+				normalize(request, response);
+
 			} else {
 
 				returnError(request, response, params, "Action not supported!");
@@ -116,6 +129,51 @@ public class RestHandler extends AbstractHandler {
 			returnError(request, response, params, "Action not selected!");
 
 		}
+
+	}
+
+	private void normalize(HttpServletRequest request,
+			HttpServletResponse response) {
+		IPreprocessor preprocessor = new NormalizePreprocesor();
+		try {
+			instancesContainer = preprocessor.preprocessForAttrNumbers(instancesContainer, null);
+			getInstances(request, response);
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnError(request, response, null, "Normalize error");
+			((Request) request).setHandled(true);
+		}
+	}
+
+	private void discretize(HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
+
+			Map<String, String[]> parameters = request.getParameterMap();
+			String[] attributesStr = parameters.get("attributes[]");
+
+			int[] attributes = Utils.parseToIntList(attributesStr);
+			IPreprocessor preprocessor = new DiscretizePreprocessor();
+			instancesContainer = preprocessor.preprocessForAttrNumbers(
+					instancesContainer, attributes);
+			Map<Integer, String[]> result = new HashMap<>();
+			for (int attr : attributes) {
+				result.put(attr, new String[instancesContainer.numInstances()]);
+				for (int i = 0; i < instancesContainer.numInstances(); i++) {
+					String nominalValue = instancesContainer.instance(i)
+							.toString(attr);
+					result.get(attr)[i] = nominalValue;
+				}
+			}
+			Gson gson = new Gson();
+			String resultStr = gson.toJson(result);
+			response.getWriter().println(resultStr);
+
+		} catch (Exception e) {
+			returnError(request, response, null, "Discretize error");
+			e.printStackTrace();
+		}
+		((Request) request).setHandled(true);
 
 	}
 
