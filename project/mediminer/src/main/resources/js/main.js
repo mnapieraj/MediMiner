@@ -1,10 +1,9 @@
 $(document).ready(function() {
 
     console.log('Main view loaded');
-
+    
     var actions = new Actions();
-    var instances = new Instances('data-table');
-
+    
     // menu buttons
     $('li#import-data').click(function(e) {
 	e.preventDefault();
@@ -39,6 +38,8 @@ $(document).ready(function() {
 });
 
 function Actions() {
+	this.instances = new Instances('data-table');
+    this.initToolbox("toolbox");
 };
 
 Actions.prototype.showError = function(message) {
@@ -86,7 +87,7 @@ Actions.prototype.loadHeaders = function() {
 	    $('#data-table thead').append('<th title="' + item.m_Name + '"><div>' + item.m_Name + '</div></th>');
 	    $('#data-table tfoot').append('<th title="' + item.m_Name + '"><div>' + item.m_Name + '</div></th>');
 	});
-	instances.addOptionsToHeaders();
+	actions.instances.addOptionsToHeaders();
 	
     }).error(function(err, a, b) {
 	actions.showError("You have to open model or import any data file.");
