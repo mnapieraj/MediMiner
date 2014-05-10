@@ -10,7 +10,9 @@ import org.eclipse.jetty.server.Handler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
+import org.eclipse.jetty.server.handler.ResourceHandler;
 
+import pl.put.poznan.cs.idss.siwoz.mediminer.handler.FileDownloadHandler;
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.MainResourceHandler;
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.RestHandler;
 
@@ -35,8 +37,13 @@ public class MainListener {
 			contextRest.setContextPath("/rest");
 			contextRest.setHandler(new RestHandler());
 
+			ContextHandler contextDownload = new ContextHandler();
+			contextDownload.setContextPath("/files");
+			contextDownload.setHandler(new FileDownloadHandler());
+
 			ContextHandlerCollection contexts = new ContextHandlerCollection();
-			contexts.setHandlers(new Handler[] { contextPage, contextRest });
+			contexts.setHandlers(new Handler[] { contextPage, contextRest,
+					contextDownload });
 
 			server.setHandler(contexts);
 

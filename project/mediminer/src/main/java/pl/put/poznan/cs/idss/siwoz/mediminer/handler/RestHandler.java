@@ -1,6 +1,8 @@
 package pl.put.poznan.cs.idss.siwoz.mediminer.handler;
 
+import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -23,6 +25,8 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader.IToInstancesConver
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader.XlsToInstancesConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.IFromInstancesConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToArffConverter;
+import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToCSVConverter;
+import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToXlsConverter;
 import weka.core.Attribute;
 import weka.core.Instance;
 import weka.core.Instances;
@@ -93,6 +97,14 @@ public class RestHandler extends AbstractHandler {
 			} else if (action.equals("export-arff")) {
 
 				exportArff(request, response);
+
+			} else if (action.equals("export-xls")) {
+
+				exportXls(request, response);
+
+			} else if (action.equals("export-csv")) {
+
+				exportCsv(request, response);
 
 			} else {
 
@@ -204,8 +216,65 @@ public class RestHandler extends AbstractHandler {
 			}
 
 			IFromInstancesConverter arffConverter = new InstancesToArffConverter();
-			arffConverter.parseFromInstances(instancesContainer, "MediMiner"
-					+ new Date() + ".arff");
+			Date now = new Date();
+			filePath = "MediMiner_"
+					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
+					+ ".arff";
+			arffConverter.parseFromInstances(instancesContainer, filePath);
+			response.getWriter().println(filePath);
+		} catch (Exception e) {
+			response.setContentType("text/plain");
+			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			((Request) request).setHandled(true);
+		}
+
+		((Request) request).setHandled(true);
+	}
+
+	private void exportCsv(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String filePath = "";
+
+		try {
+
+			if (instancesContainer == null) {
+				throw new Exception("There is not file loaded");
+			}
+
+			IFromInstancesConverter csvConverter = new InstancesToCSVConverter();
+			Date now = new Date();
+			filePath = "MediMiner_"
+					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
+					+ ".csv";
+			csvConverter.parseFromInstances(instancesContainer, filePath);
+			response.getWriter().println(filePath);
+		} catch (Exception e) {
+			response.setContentType("text/plain");
+			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			((Request) request).setHandled(true);
+		}
+
+		((Request) request).setHandled(true);
+	}
+
+	private void exportXls(HttpServletRequest request,
+			HttpServletResponse response) {
+
+		String filePath = "";
+
+		try {
+
+			if (instancesContainer == null) {
+				throw new Exception("There is not file loaded");
+			}
+
+			IFromInstancesConverter xlsConverter = new InstancesToXlsConverter();
+			Date now = new Date();
+			filePath = "MediMiner_"
+					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
+					+ ".xls";
+			xlsConverter.parseFromInstances(instancesContainer, filePath);
 			response.getWriter().println(filePath);
 		} catch (Exception e) {
 			response.setContentType("text/plain");
