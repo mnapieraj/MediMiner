@@ -41,14 +41,14 @@ header h2 small {
 div#error-box {
 	color: #F0F0F0;
 	background-color: #DD3322;
-	padding: 5px;
+	padding: 10px;
 	border-left: 220px solid #BB4433;
 }
 
 div#success-box {
 	color: #F0F0F0;
 	background-color: #44BB33;
-	padding: 5px;
+	padding: 10px;
 	border-left: 220px solid #559944;
 }
 
@@ -260,10 +260,10 @@ div.tool .options label {
 div.tool .options select {
 	float: right;
 	padding: 4px;
-	margin: 0px;
+	margin: 0px; border : none;
+	background-color: #FFFFFF;
 	border: none;
-	background-color: #FFFFFF;	
-} 
+}
 
 div.tool .build {
 	border: none;
@@ -279,6 +279,23 @@ div.tool .build {
 }
 
 div.tool .build:hover {
+	opacity: 1.0;
+}
+
+div.tool .classify {
+	border: none;
+	background: none;
+	color: #FEFEFE;
+	padding: 5px;
+	padding-left: 32px;
+	background-image: url('../images/bars.png');
+	background-repeat: no-repeat;
+	background-position: 10px 7px;
+	font-size: 14pt;
+	opacity: 0.8;
+}
+
+div.tool .classify:hover {
 	opacity: 1.0;
 }
 
