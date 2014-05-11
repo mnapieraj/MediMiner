@@ -14,7 +14,7 @@ header {
 	margin: 0 auto;
 	background-color: rgba(0, 0, 0, 0.85);
 	color: #FAFAFA;
-	padding: 40px 20px 30px 20px;
+	padding: 20px 20px 15px 20px;
 }
 
 header h1 {
@@ -64,9 +64,10 @@ div#menu {
 div#data {
 	float: right;
 	width: calc(100% - 220px);
+	background-color: #F0F0F0;
 }
 
-nav ul {
+ul {
 	display: block;
 	margin: 0px;
 	padding: 0px;
@@ -136,7 +137,7 @@ div#tip {
 	clear: both;
 	background-color: rgba(248, 248, 248, 0.95);
 	border-bottom: 1px solid #C0C0C0;
-	padding: 20px;
+	padding: 10px;
 	color: #787878;
 }
 
@@ -161,7 +162,7 @@ div#table-container {
 }
 
 div#table-container-outer {
-	height: 510px;
+	height: 530px;
 	overflow: hidden;
 	padding: 0px;
 	margin: 0px;
@@ -174,16 +175,17 @@ div#table-container-outer {
 
 div#toolbox {
 	width: calc(20% - 40px);
-	height: 520px;
-	padding: 10px;
+	height: 560px;
+	padding: 0px 10px;
 	margin: 0px;
 	background-color: #FAFAFA;
 	float: right;
 }
 
 #preprocessToolbox {
-	margin: 10px;
+	margin: 0px 10px;
 	padding: 0px;
+	font-size : 14px;
 }
 
 #preprocessToolbox li {
@@ -192,6 +194,30 @@ div#toolbox {
 	padding: 5px;
 	background-color: rgba(248, 248, 248, 0.95);
 	border: 1px solid #C0C0C0;
+}
+
+#preprocessToolbox li:hover {
+	border-color : #939393;
+}
+
+#selectAttrOptions {
+	max-width : 247px; 
+	border : 1px solid #C0C0C0;
+	border-top : none;
+}
+
+#selectAttrOptions li {
+	display : table-cell;
+	width : 75px;
+	border : none;
+	background-color : white;
+	font-family: sans-serif;
+font-size: 11px;
+
+}
+
+#selectAttrOptions li:hover {
+	background-color : rgba(15, 12, 12, 0.17) !important;
 }
 
 

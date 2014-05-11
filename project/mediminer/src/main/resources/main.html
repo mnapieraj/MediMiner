@@ -64,11 +64,19 @@
 			
 
 			<div id="table-container-outer">
-				<ul id=preprocessToolbox>
-					<li>Select attributes... - nie klikac, nic to nie da.</li>
+			<div id=preprocessToolbox>
+				<ul>
+					<li id=selectAttr>Select attributes...
+					</li>
 					<li id="discretize">Discretize</li>		
 					<li id="normalize">Normalize</li>				
 				</ul>
+				<ul id=selectAttrOptions>
+					<li id=all>&#9658; All</li>
+					<li id=none>&#9658; None</li>
+					<li id=best>&#9658; The best...</li>
+				</ul>
+			</div>
 				<div id="table-container">
 					<table id="data-table" class="dn">
 						<thead>

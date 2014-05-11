@@ -21,7 +21,7 @@ table#data-table th {
 	font-size: 12pt;
 	color: #F0F0F0;
 	min-width: 40px;
-	padding: 10px 15px;
+	padding: 5px;
 	text-align : center;
 }
 
@@ -41,7 +41,12 @@ height: 17px;
 }
 
 
-table#data-table td.selected, th.selected {
-	background-color : #559944 !important;
+table#data-table td.selected {
+	background-color : rgba(162, 255, 137, 0.27) !important;
+	color : black !important;
+}
+
+table#data-table  th.selected {
+	background-color : black !important;
 	color : white !important;
 }

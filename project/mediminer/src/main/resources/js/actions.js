@@ -1,6 +1,9 @@
 Actions.prototype.initToolbox = function(toolboxId) {
 	var self = this;
 	this.toolbox = $("#" + toolboxId);
+	
+	this.toolbox.find("#selectAttrOptions").hide();
+	
 	this.toolbox.find("#discretize").click(function(evt) {
 		self.discretize();
 	});
@@ -8,6 +11,26 @@ Actions.prototype.initToolbox = function(toolboxId) {
 	this.toolbox.find("#normalize").click(function(evt) {
 		self.normalize();
 	});
+	
+	this.toolbox.find("#selectAttr").click(function(evt) {
+		self.showOptions();
+	});
+	
+	this.toolbox.find("#selectAttrOptions").find("#all").click(function (evt) {
+		self.instances.selectAll();
+		$("#selectAttrOptions").hide();
+	});
+	
+	this.toolbox.find("#selectAttrOptions").find("#none").click(function (evt) {
+		self.instances.unselectAll();
+		$("#selectAttrOptions").hide();
+	});
+	
+	this.toolbox.find("#selectAttrOptions").find("#best").click(function (evt) {
+		self.selectBest();
+		$("#selectAttrOptions").hide();
+	});
+	
 }
 
 Actions.prototype.discretize = function() {
@@ -46,3 +69,13 @@ Actions.prototype.normalize = function () {
 
 	});
 }
+
+Actions.prototype.showOptions = function () {
+	var options = this.toolbox.find("#selectAttrOptions");
+	if(options.is(":visible")) {
+		options.hide();
+	} else {
+		options.show();
+	}
+}
+
