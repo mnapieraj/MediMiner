@@ -103,3 +103,13 @@ Instances.prototype.modifyInstances = function(data) {
 		}
 	});
 };
+
+Instances.prototype.setClassLabels = function (labels) {
+	var classCells = this.table.find("tbody").find("td:last-child");
+	$.each(classCells, function (idx, cell) {
+		var cellVal = parseInt($(cell).text());
+		if(!isNaN(cellVal) && labels[cellVal]) {
+			$(cell).text(labels[cellVal]);
+		}
+	});
+}

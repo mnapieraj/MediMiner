@@ -109,6 +109,9 @@ public class RestHandler extends AbstractHandler {
 
 				getInstances(request, response);
 
+			} else if (action.equals("get-class-labels")) {
+				getClassLabels(request, response);
+				
 			} else if (action.equals("export-arff")) {
 
 				exportArff(request, response);
@@ -227,6 +230,7 @@ public class RestHandler extends AbstractHandler {
 			for (int i = 0; i < instancesContainer.numInstances(); i++) {
 				instances.add(instancesContainer.instance(i));
 			}
+
 			Gson gson = new GsonBuilder().serializeSpecialFloatingPointValues()
 					.addSerializationExclusionStrategy(new ExclusionStrategy() {
 
@@ -240,6 +244,7 @@ public class RestHandler extends AbstractHandler {
 							return clazz == Instances.class;
 						}
 					}).create();
+
 			String gsonResponse = gson.toJson(instances);
 			gsonResponse = gsonResponse.replace("Infinity", "99999999.999");
 			gsonResponse = gsonResponse.replace("NaN", "0.00");
@@ -249,6 +254,20 @@ public class RestHandler extends AbstractHandler {
 			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			((Request) request).setHandled(true);
 		}
+	}
+
+	private void getClassLabels(HttpServletRequest request,
+			HttpServletResponse response) throws IOException {
+		List<String> classLabels = new ArrayList<>();
+		if (instancesContainer != null) {
+			for (int i = 0; i < instancesContainer.classAttribute().numValues(); i++) {
+				classLabels.add(instancesContainer.classAttribute().value(i));
+			}
+		}
+		Gson gson = new Gson();
+		String resultStr = gson.toJson(classLabels);
+		response.getWriter().println(resultStr);
+		((Request) request).setHandled(true);
 	}
 
 	private void getAttributes(HttpServletRequest request,
