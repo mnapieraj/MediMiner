@@ -221,7 +221,8 @@ font-size: 11px;
 }
 
 .ui-dialog {
-	font-size : 10px;
+	font-size : 8pt;
+	width : 250px !important;
 }
 
 footer {

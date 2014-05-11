@@ -114,6 +114,8 @@ Actions.prototype.loadHeaders = function() {
 	    $('#data-table tfoot').append('<th title="' + item.m_Name + '"><div>' + item.m_Name + '</div></th>');
 	});
 	actions.instances.addOptionsToHeaders();
+	var headersNo = actions.instances.table.find("thead").find("th").length;
+	$("#selectAttrDialog").find("#attrNo").attr("max", headersNo - 1).val(headersNo - 1);
 	
     }).error(function(err, a, b) {
 	actions.showError("You have to open model or import any data file.");
@@ -175,6 +177,7 @@ Actions.prototype.loadInstances = function() {
 	$('div#table-container').css('overflow', 'scroll');
 	$('div#table-container').css('background-image', 'none');
 	actions.showSuccess(data.length + " instances have been loaded.");
+	
     }).error(function(err, a, b) {
 	$('div#table-container').css('background-image', 'none');
 	actions.showError("You have to open model or import any data file.");

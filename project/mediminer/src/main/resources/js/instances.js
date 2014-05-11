@@ -45,7 +45,7 @@ Instances.prototype.onSelectChange = function(clickedElement) {
 		}
 		column.removeClass('selected');
 	}
-	self.table.find("[name=" + colNumber + "]").attr('checked',
+	self.table.find("[name=" + colNumber + "]").prop('checked',
 			$(clickedElement).is(":checked"));
 }
 

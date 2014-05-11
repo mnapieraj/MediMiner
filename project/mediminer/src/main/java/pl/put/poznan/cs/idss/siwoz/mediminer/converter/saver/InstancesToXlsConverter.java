@@ -51,7 +51,7 @@ public class InstancesToXlsConverter implements IFromInstancesConverter {
 		allRowAndColData = new ArrayList<ArrayList<String>>();
 		while ((currentLine = myInput.readLine()) != null) {
 			oneRowData = new ArrayList<String>();
-			String oneRowArray[] = currentLine.split(";");
+			String oneRowArray[] = currentLine.split(",");
 			for (int j = 0; j < oneRowArray.length; j++) {
 				oneRowData.add(oneRowArray[j]);
 			}
