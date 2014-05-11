@@ -18,7 +18,7 @@ table#data-table th {
 	padding-bottom: 15px;
 	padding-top: 15px;
 	/*border-bottom: 1px solid #898989;*/
-	font-size: 12pt;
+	font-size: 10pt;
 	color: #F0F0F0;
 	min-width: 40px;
 	padding: 5px;
@@ -31,13 +31,13 @@ table#data-table td {
 	padding: 10px;
 	/* border-bottom: 1px solid #DDDDDD; */
 	text-align: center;
-	font-size: 10pt;
+	font-size: 9pt;
 }
 
 input[type="checkbox"] {
 	margin: 10px;
-width: 17px;
-height: 17px;
+	width: 17px;
+	height: 17px;
 }
 
 

@@ -68,6 +68,16 @@ Instances.prototype.selectAll = function() {
 
 }
 
+Instances.prototype.selectAttributes = function (attributes) {
+	var self = this;
+	self.unselectAll();
+	$.each(attributes, function(idx, el) {
+		var checkbox = self.table.find("[name='" + el + "']").prop('checked', true);
+		self.onSelectChange(checkbox);
+	});
+	
+}
+
 Instances.prototype.modifyAttributes = function(attributesMap) {
 	var self = this;
 	$.each(attributesMap, function(key, values) {

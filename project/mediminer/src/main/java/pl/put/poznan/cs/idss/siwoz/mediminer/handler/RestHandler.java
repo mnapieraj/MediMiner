@@ -31,6 +31,8 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToXlsConve
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.DiscretizePreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.IPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.selector.IAttributeSelector;
+import pl.put.poznan.cs.idss.siwoz.mediminer.selector.InfoGainAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.lazy.IBk;
@@ -77,7 +79,6 @@ public class RestHandler extends AbstractHandler {
 	public void handle(String target, Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response)
 			throws IOException, ServletException {
-
 		Map<String, String[]> params = request.getParameterMap();
 
 		if (request.getContentType() != null
@@ -128,7 +129,13 @@ public class RestHandler extends AbstractHandler {
 
 				normalize(request, response);
 
-			} else if (action.equals("build")) {
+			} else if (action.equals("select-attributes")) {
+
+				selectAttributes(request, response);
+
+			}
+
+			else if (action.equals("build")) {
 
 				String classifier = params.get("classifier")[0];
 				String option = params.get("option")[0];
@@ -148,11 +155,32 @@ public class RestHandler extends AbstractHandler {
 
 	}
 
+	private void selectAttributes(HttpServletRequest request,
+			HttpServletResponse response) {
+		try {
+			Map<String, String[]> parameters = request.getParameterMap();
+			int attributesNo = Integer
+					.parseInt(parameters.get("attributesNo")[0]);
+			IAttributeSelector attSelector = new InfoGainAttributeSelector();
+			double[][] rankedAttributes = attSelector.selectAttributes(
+					instancesContainer, attributesNo);
+			Gson gson = new Gson();
+			String resultStr = gson.toJson(rankedAttributes);
+			response.getWriter().println(resultStr);
+		} catch (Exception e) {
+			e.printStackTrace();
+			returnError(request, response, null, "Select attributes error");
+		}
+
+		((Request) request).setHandled(true);
+	}
+
 	private void normalize(HttpServletRequest request,
 			HttpServletResponse response) {
 		IPreprocessor preprocessor = new NormalizePreprocesor();
 		try {
-			instancesContainer = preprocessor.preprocessForAttrNumbers(instancesContainer, null);
+			instancesContainer = preprocessor.preprocessForAttrNumbers(
+					instancesContainer, null);
 			getInstances(request, response);
 		} catch (Exception e) {
 			returnError(request, response, null, "Normalize error");

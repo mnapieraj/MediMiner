@@ -3,6 +3,7 @@ Actions.prototype.initToolbox = function(toolboxId) {
 	this.toolbox = $("#" + toolboxId);
 	
 	this.toolbox.find("#selectAttrOptions").hide();
+	this.toolbox.find("#selectAttrDialog").hide();
 	
 	this.toolbox.find("#discretize").click(function(evt) {
 		self.discretize();
@@ -27,7 +28,7 @@ Actions.prototype.initToolbox = function(toolboxId) {
 	});
 	
 	this.toolbox.find("#selectAttrOptions").find("#best").click(function (evt) {
-		self.selectBest();
+		self.selectBestAction();
 		$("#selectAttrOptions").hide();
 	});
 	
@@ -66,7 +67,7 @@ Actions.prototype.normalize = function () {
 	}).done(function(data) {
 		self.instances.modifyInstances(JSON.parse(data));
 	}).error(function(err, a, b) {
-
+		self.showError("An error occured during normalization. Please try again.");
 	});
 }
 
@@ -79,3 +80,41 @@ Actions.prototype.showOptions = function () {
 	}
 }
 
+Actions.prototype.selectBestAction = function () {
+	var self = this;
+	$("#selectAttrDialog").dialog({
+		modal : true,
+		buttons : {
+			Select : function () {
+				self.selectBest();
+				$( this ).dialog( "close" );
+			}
+		}
+	});
+	return;
+}
+
+Actions.prototype.selectBest = function () {
+	var attrNo = $("#selectAttrDialog").find("#attrNo").val();
+	var self = this;
+	$.ajax({
+		url : 'rest?action=select-attributes',
+		context : document.body,
+		data : {
+			"attributesNo" : attrNo,
+		}
+	}).done(function(data) {
+		var rankedAttributes = JSON.parse(data),
+		attributes = $.map(rankedAttributes, function(el, idx){
+			return el[0] + 1;
+		});
+		ranks = $.map(rankedAttributes, function(el, idx){
+			return el[1];
+		});
+		self.instances.selectAttributes(attributes);
+		
+	}).error(function(err, a, b) {
+		self.showError("An error occured during selecting attributes. Please try again.");
+	});
+}
+	

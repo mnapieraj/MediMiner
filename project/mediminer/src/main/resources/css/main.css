@@ -220,6 +220,9 @@ font-size: 11px;
 	background-color : rgba(15, 12, 12, 0.17) !important;
 }
 
+.ui-dialog {
+	font-size : 10px;
+}
 
 footer {
 	color: #F0F0F0;

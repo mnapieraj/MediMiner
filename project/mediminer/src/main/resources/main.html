@@ -6,6 +6,8 @@
 
 <title>MediMiner</title>
 
+<link rel="stylesheet"
+	href="//code.jquery.com/ui/1.10.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet" href="css/instances.css">
 <link rel="stylesheet" href="css/main.css">
 <link
@@ -13,6 +15,7 @@
 	rel='stylesheet' type='text/css'>
 
 <script src="js/jquery.min.js"></script>
+<script src="//code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
 <script src="js/main.js"></script>
 <script src="js/instances.js"></script>
 <script src="js/actions.js"></script>
@@ -61,22 +64,35 @@
 			<div id="tip">If you don't know how any option works, move
 				cursor on the button and wait for tooltip (little comic's bubble
 				with description).</div>
-			
+
 
 			<div id="table-container-outer">
-			<div id=preprocessToolbox>
-				<ul>
-					<li id=selectAttr>Select attributes...
-					</li>
-					<li id="discretize">Discretize</li>		
-					<li id="normalize">Normalize</li>				
-				</ul>
-				<ul id=selectAttrOptions>
-					<li id=all>&#9658; All</li>
-					<li id=none>&#9658; None</li>
-					<li id=best>&#9658; The best...</li>
-				</ul>
-			</div>
+				<div id=preprocessToolbox>
+
+					<ul>
+						<li id=selectAttr>Select attributes...</li>
+						<li id="discretize">Discretize</li>
+						<li id="normalize">Normalize</li>
+					</ul>
+					<ul id=selectAttrOptions>
+						<li id=all>&#9658; All</li>
+						<li id=none>&#9658; None</li>
+						<li id=best>&#9658; The best...</li>
+					</ul>
+					<div id="selectAttrDialog" title="Select best attributes">
+						<table>
+							<tr>
+								<td>Attributes number:</td>
+								<td><input id="attrNo" name="attrNo" type="number"></td>
+							</tr>
+							<!--  <tr>
+								<td>Selection method:</td>
+								<td><select><option>Info gain</option></select></td>
+							</tr>
+							-->
+						</table>
+					</div>
+				</div>
 				<div id="table-container">
 					<table id="data-table" class="dn">
 						<thead>
