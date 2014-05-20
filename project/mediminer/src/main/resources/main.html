@@ -19,6 +19,7 @@
 <script src="js/main.js"></script>
 <script src="js/instances.js"></script>
 <script src="js/actions.js"></script>
+<script src="js/tooltips.js"></script>
 </head>
 <body>
 
@@ -109,9 +110,9 @@
 			<div id="toolbox">
 
 				<div class="tool">
-					<h3>Naive Bayes Classifier</h3>
+					<h3 id="naiveBayes">Naive Bayes Classifier</h3>
 					<div class="options">
-						<label>Estimate kernel?</label> <select id="option-naive-bayes">
+						<label id="estimateKernel">Estimate kernel?</label> <select id="option-naive-bayes">
 							<option value="yes">Yes</option>
 							<option value="no">No</option>
 						</select>
@@ -124,9 +125,9 @@
 				</div>
 
 				<div class="tool">
-					<h3>J48 Classifier</h3>
+					<h3 id="j48">J48 Classifier</h3>
 					<div class="options">
-						<label>Confidence level</label> <select id="option-j48">
+						<label id="confidenceLevel">Confidence level</label> <select id="option-j48">
 							<option value="0.01">0.01</option>
 							<option value="0.02">0.02</option>
 							<option value="0.03">0.03</option>
@@ -150,9 +151,9 @@
 				</div>
 
 				<div class="tool">
-					<h3>IBk Classifier</h3>
+					<h3 id="ibk">IBk Classifier</h3>
 					<div class="options">
-						<label>Neighbours</label> <select id="option-ibk">
+						<label id="neighbours">Neighbours</label> <select id="option-ibk">
 							<option value="1">1</option>
 							<option value="3">3</option>
 							<option value="5">5</option>
@@ -170,9 +171,9 @@
 				</div>
 
 				<div class="tool">
-					<h3>DTNB Classifier</h3>
+					<h3 id="dtnb">DTNB Classifier</h3>
 					<div class="options">
-						<label>Evalueation measure</label> <select id="option-dtnb">
+						<label id="evaluationMeasure">Evalueation measure</label> <select id="option-dtnb">
 							<option value="rmse">RMSE</option>
 							<option value="mae">mae</option>
 							<option value="auc">AUC</option>

@@ -10,8 +10,9 @@ Instances.prototype.addOptionsToHeaders = function() {
 	var headTh = this.table.find("thead").find("th");
 	var headers = this.table.find("th");
 	
-	$(footTh[footTh.length - 1]).css('padding-bottom',  '45px');
-	$(headTh[headTh.length - 1]).css('padding-top',  '45px');
+	$(footTh[footTh.length - 1]).css('padding-bottom',  '45px').addClass('selected');
+	$(headTh[headTh.length - 1]).css('padding-top',  '45px').addClass('selected');
+	
 	
 	footTh.splice(footTh.length - 1);
 	headTh.splice(headTh.length - 1);

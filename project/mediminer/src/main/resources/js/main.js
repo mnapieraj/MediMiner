@@ -4,6 +4,8 @@ $(document).ready(function() {
 
 	var actions = new Actions();
 
+	Tooltips.init();
+	
 	$('#error-box').click(function(e) {
 		e.preventDefault();
 		$(this).fadeOut();
@@ -202,10 +204,10 @@ Actions.prototype.loadInstances = function() {
 				actions.showSuccess(data.length
 						+ " instances have been loaded.");
 				actions.loadClassLabels();
+				actions.instances.table.find("td:last-child").addClass('selected');
 			}).error(function(err, a, b) {
 		$('div#table-container').css('background-image', 'none');
 		actions.showError("You have to open model or import any data file.");
-		console.log(err);
 	});
 }
 
