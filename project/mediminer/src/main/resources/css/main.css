@@ -220,6 +220,12 @@ font-size: 11px;
 	background-color : rgba(15, 12, 12, 0.17) !important;
 }
 
+.smallCheckbox {
+	margin : 0 0 0 5px !important;
+	width : 10px !important;
+	height : 10px !important;
+}
+
 .ui-dialog {
 	font-size : 8pt;
 	width : 250px !important;
@@ -245,4 +251,8 @@ footer {
 
 .fr {
 	float: right;
+}
+
+.hidden {
+	display : none !important;
 }

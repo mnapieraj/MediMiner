@@ -32,6 +32,10 @@ Actions.prototype.initToolbox = function(toolboxId) {
 		$("#selectAttrOptions").hide();
 	});
 	
+	this.toolbox.find("#hideCheckbox").click(function (evt) {
+		self.changeVisibiltyOfUnselected();
+	});
+	
 }
 
 Actions.prototype.discretize = function() {
@@ -117,4 +121,8 @@ Actions.prototype.selectBest = function () {
 		self.showError("An error occured during selecting attributes. Please try again.");
 	});
 }
-	
+
+Actions.prototype.changeVisibiltyOfUnselected = function () {
+	var visible = !this.toolbox.find("#hideCheckbox").is(":checked");
+	this.instances.changeVisibiltyOfUnselected(visible);
+}

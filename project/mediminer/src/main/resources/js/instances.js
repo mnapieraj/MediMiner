@@ -114,3 +114,12 @@ Instances.prototype.setClassLabels = function (labels) {
 		}
 	});
 }
+
+Instances.prototype.changeVisibiltyOfUnselected = function (visible) {
+	var unselected = this.table.find("td, th").not(".selected");
+	if(visible) {
+		unselected.removeClass("hidden");
+	} else {
+		unselected.addClass("hidden");
+	} 
+}

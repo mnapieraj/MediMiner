@@ -2,7 +2,11 @@ var Tooltips =
 		(function() {
 			return {
 				init : function() {
-					$(document).tooltip();
+					$(document).tooltip({
+						show : {
+							delay : 1000,
+						}
+					});
 					$("#selectAttr").attr('title', Hints.selectAttributesTxt);
 					$("#discretize").attr('title', Hints.discretizeTxt);
 					$("#normalize").attr('title', Hints.normalizeTxt);
@@ -39,7 +43,7 @@ var Hints =
 				ibkTxt : "In IBk classification an object is assigned to the class most common among its k nearest neighbours (by majority vote), where k is an algorithm's parameter."	,
 				neighboursTxt : "The best choice of neighbours depends upon the data; generally, larger values reduce the effect of noise on the classification, but make boundaries between classes less distinct.",
 				
-				dtnbTxt : "DTNB approach is using a decision table/naive bayes hybrid classifier.At each point in the search, the algorithm evaluates the merit of dividing the attributes into two disjoint subsets: one for the decision table, the other for naive Bayes. A forward selection search is used, where at each step, selected attributes are modeled by naive Bayes and the remainder by the decision table, and all attributes are modelled by the decision table initially. At each step, the algorithm also considers dropping an attribute entirely from the model.",
+				dtnbTxt : "DTNB approach is using a decision table/naive bayes hybrid classifier. At each point in the search, the algorithm evaluates the merit of dividing the attributes into two disjoint subsets: one for the decision table, the other for naive Bayes. Thin can result in more powerful models than just naive Bayes, but also increases a time needed in model construction.",
 				evaluationMeasureTxt : "Performance evaluation measures to use for selecting attributes:  RMSE (of the class probabilities fot discrete class), MAE (of the class probabilities fot discrete class), AUC (area under the ROC curve - discrete class only)."
 			}
 })();
