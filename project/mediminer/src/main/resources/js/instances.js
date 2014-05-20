@@ -2,6 +2,7 @@ function Instances(tableId) {
 	this.table = $("#" + tableId);
 	// atrybuty indeksowane od 0
 	this.selectedAttributes = [];
+	this.unselectedVisible = true;
 };
 
 Instances.prototype.addOptionsToHeaders = function() {
@@ -45,6 +46,9 @@ Instances.prototype.onSelectChange = function(clickedElement) {
 			self.selectedAttributes.splice(idx, 1);			
 		}
 		column.removeClass('selected');
+		if(!self.unselectedVisible) {
+			column.addClass('hidden');
+		}
 	}
 	self.table.find("[name=" + colNumber + "]").prop('checked',
 			$(clickedElement).is(":checked"));
@@ -117,6 +121,7 @@ Instances.prototype.setClassLabels = function (labels) {
 
 Instances.prototype.changeVisibiltyOfUnselected = function (visible) {
 	var unselected = this.table.find("td, th").not(".selected");
+	this.unselectedVisible = visible;
 	if(visible) {
 		unselected.removeClass("hidden");
 	} else {
