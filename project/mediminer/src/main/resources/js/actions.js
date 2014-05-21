@@ -367,7 +367,7 @@ Actions.prototype.classifyAction = function(classifier) {
     var self = this;
     $('#classifyDialog table').empty();
 
-    if ($('#data-table th input').find(':checked').length < 1) {
+    if (!self.instances.selectedAttributes.length) {
 	self.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
     } else {
 

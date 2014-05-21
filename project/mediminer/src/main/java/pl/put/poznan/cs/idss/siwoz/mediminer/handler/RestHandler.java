@@ -609,6 +609,7 @@ public class RestHandler extends AbstractHandler {
 			response.getWriter().println(result.toString());
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setContentType("text/plain");
 			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			((Request) request).setHandled(true);
