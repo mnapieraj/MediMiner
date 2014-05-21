@@ -133,6 +133,10 @@ li#export-data-xls {
 	background-image: url('../images/file-excel.png');
 }
 
+li#close {
+	background-image: url('../images/switch.png');
+}
+
 div#tip {
 	clear: both;
 	background-color: rgba(248, 248, 248, 0.95);
@@ -302,6 +306,15 @@ div.tool .classify:hover {
 	font-size: 8pt;
 	width: 250px !important;
 }
+
+tr.to-classify td {
+	background-color: rgba(51, 153, 68, 0.3);
+}
+
+tr.failed-classify td {
+	background-color: rgba(153, 11, 21, 0.3);
+}
+
 
 footer {
 	color: #F0F0F0;

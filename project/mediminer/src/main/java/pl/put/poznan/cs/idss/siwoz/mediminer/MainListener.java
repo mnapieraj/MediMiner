@@ -12,6 +12,7 @@ import org.eclipse.jetty.server.handler.ContextHandler;
 import org.eclipse.jetty.server.handler.ContextHandlerCollection;
 import org.eclipse.jetty.server.handler.ResourceHandler;
 
+import pl.put.poznan.cs.idss.siwoz.mediminer.handler.CloseHandler;
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.FileDownloadHandler;
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.MainResourceHandler;
 import pl.put.poznan.cs.idss.siwoz.mediminer.handler.RestHandler;
@@ -41,9 +42,13 @@ public class MainListener {
 			contextDownload.setContextPath("/files");
 			contextDownload.setHandler(new FileDownloadHandler());
 
+			ContextHandler contextClose = new ContextHandler();
+			contextClose.setContextPath("/close");
+			contextClose.setHandler(new CloseHandler(server));
+
 			ContextHandlerCollection contexts = new ContextHandlerCollection();
 			contexts.setHandlers(new Handler[] { contextPage, contextRest,
-					contextDownload });
+					contextDownload, contextClose });
 
 			server.setHandler(contexts);
 

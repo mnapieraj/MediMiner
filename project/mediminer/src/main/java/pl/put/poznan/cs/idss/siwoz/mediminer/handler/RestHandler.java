@@ -64,7 +64,7 @@ public class RestHandler extends AbstractHandler {
 	public static String KEY = Double
 			.toString(Math.round(Math.random() * 100000));
 
-	public static String SPLITTER = ":Medi|Miner|Data:";
+	public static String SPLITTER = ":MediMinerData:";
 
 	private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement(
 			System.getProperty("user.dir"));
@@ -573,6 +573,8 @@ public class RestHandler extends AbstractHandler {
 						instance.setValue(i, values[i].toString());
 					}
 
+				} else {
+					instance.setValue(i, new String());
 				}
 
 			}
@@ -597,9 +599,11 @@ public class RestHandler extends AbstractHandler {
 				throw new Exception("Classifier is not built");
 			}
 
+			instance.setDataset(currentInstances);
+
 			result = c.classifyInstance(instance);
 
-			response.getWriter().println(result.toString());
+			response.getWriter().println(result);
 
 		} catch (Exception e) {
 			response.setContentType("text/plain");

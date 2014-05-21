@@ -36,6 +36,11 @@ $(document).ready(function() {
 	e.preventDefault();
 	actions.downloadXls();
     });
+    
+    $('li#close').click(function(e) {
+	e.preventDefault();
+	actions.close();
+    });
 
     $('input#file_to_open').change(function() {
 	$('form#open_file_form').submit();

@@ -1,6 +1,7 @@
 function Actions() {
     this.instances = new Instances('data-table');
     this.initToolbox("preprocessToolbox");
+    this.SPLITTER = ":MediMinerData:"
 };
 
 Actions.prototype.initToolbox = function(toolboxId) {
@@ -338,23 +339,29 @@ Actions.prototype.buildClassifier = function(classifier) {
 
     var actions = this;
 
-    var option = $('#option-' + classifier).val();
+    if ($('#data-table thead th input:checked').length < 1) {
+	actions.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
+    } else {
 
-    $('#classify-' + classifier).hide();
+	var option = $('#option-' + classifier).val();
 
-    $.ajax({
-	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
-	context : document.body
-    }).done(function(data) {
-	actions.showSuccess("Classifier is ready.");
-	$('#build-' + classifier).text('Rebuild');
-	$('#classify-' + classifier).fadeIn();
-    }).error(function(err, a, b) {
-	actions.showError("Classifier building failed");
-	console.log(err);
-	console.log(a);
-	console.log(b);
-    });
+	$('#classify-' + classifier).hide();
+
+	$.ajax({
+	    url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
+	    context : document.body
+	}).done(function(data) {
+	    actions.showSuccess("Classifier is ready.");
+	    $('#build-' + classifier).text('Rebuild');
+	    $('#classify-' + classifier).fadeIn();
+	}).error(function(err, a, b) {
+	    actions.showError("Classifier building failed");
+	    console.log(err);
+	    console.log(a);
+	    console.log(b);
+	});
+
+    }
 }
 
 Actions.prototype.classifyAction = function(classifier) {
@@ -362,7 +369,7 @@ Actions.prototype.classifyAction = function(classifier) {
     var self = this;
     $('#classifyDialog table').empty();
 
-    if ($('#data-table th input').find(':checked').length < 1) {
+    if ($('#data-table thead th input:checked').length < 1) {
 	self.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
     } else {
 
@@ -372,12 +379,22 @@ Actions.prototype.classifyAction = function(classifier) {
 	    context : document.body
 	}).done(
 		function(data) {
+		    var row = '<tr title="This row contains your past classification. Click to remove." class="to-classify">';
 		    $.each(data, function(i, item) {
 			if ($('input[name="' + (i + 1) + '"]').is(':checked')) {
 			    $('#classifyDialog table').append(
 				    '<tr title="' + item.m_Name + '"><td>' + item.m_Name + '</td><td><input type="text" class="classify-data"></td></tr>');
-			    console.log($('#classifyDialog table').html());
+			    row += '<td class="fill-after">-</td>';
+			} else {
+			    row += '<td>-</td>';
 			}
+		    });
+		    row += '</tr>';
+
+		    $('#data-table tbody tr:first').before(row);
+		    $('#data-table tbody tr:first').click(function(e) {
+			e.preventDefault();
+			$(this).remove();
 		    });
 
 		}).error(function(err, a, b) {
@@ -390,7 +407,7 @@ Actions.prototype.classifyAction = function(classifier) {
 	    modal : true,
 	    buttons : {
 		Classify : function() {
-		    alert(classifier);
+		    self.classifyNew(classifier);
 		    $(this).dialog("close");
 		}
 	    }
@@ -399,4 +416,44 @@ Actions.prototype.classifyAction = function(classifier) {
 
     }
 
+}
+
+Actions.prototype.classifyNew = function(classifier) {
+
+    var dataString = '';
+    var self = this;
+
+    $('#classifyDialog table input').each(function() {
+	$('#data-table tbody tr:first td.fill-after:first').html($(this).val());
+	$('#data-table tbody tr:first td.fill-after:first').removeClass('fill-after');
+	dataString += $(this).val() + self.SPLITTER;
+    });
+
+    $.ajax({
+	url : 'rest?action=classify&classifier=' + classifier + '&data=' + dataString,
+	context : document.body
+    }).done(function(decision) {
+
+	self.showSuccess("Classification result: " + self.instances.labels[Math.round(decision)]);
+	$('#data-table tbody tr:first td:last').html(self.instances.labels[Math.round(decision)]);
+
+    }).error(function(err, a, b) {
+	self.showError("Classification incorrect. Did you set all parameters?");
+	$('#data-table tbody tr:first td:last').html('FAILED');
+	$('#data-table tbody tr:first').addClass('failed-classify');
+	console.log(err);
+    });
+}
+
+Actions.prototype.close = function() {
+    self.showSuccess("Application closed, now you close the window.");
+    $.ajax({
+	url : 'close',
+	context : document.body
+    }).done(function(decision) {
+	self.showSuccess("Application closed, now you close the window.");
+    }).error(function(err, a, b) {
+	self.showError("Closing error! Try again.");
+	console.log(err);
+    });
 }
