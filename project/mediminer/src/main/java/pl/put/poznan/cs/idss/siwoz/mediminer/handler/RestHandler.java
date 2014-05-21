@@ -481,7 +481,7 @@ public class RestHandler extends AbstractHandler {
 			attributes[attributesStr.length] = instancesContainer.classIndex();
 			IPreprocessor preprocessor = new ExtractAttributesPreprocessor();
 			currentInstances = preprocessor.preprocessForAttrNumbers(
-					instancesContainer, attributes);
+			instancesContainer, attributes);
 
 			if ("naive-bayes".equals(classifier)) {
 

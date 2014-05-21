@@ -186,12 +186,14 @@ div#toolbox {
 
 div.tool {
 	padding: 0px;
-	background-color: #989898;
-	color: #FAFAFA;
+	background-color: #FAFAFA;
+	color: #454545;
 	text-align: right;
-	margin-bottom: 8px;
+	margin-bottom: 3px;
+	margin-top: 5px;
 	opacity: 0.75;
 	transition-duration: 1.2s;
+	border-bottom: 1px solid #ABABAB;
 }
 
 div.tool:hover {
@@ -201,12 +203,11 @@ div.tool:hover {
 
 div.tool h3 {
 	margin: 0 auto;
-	text-align: center;
+	text-align: left;
 	padding: 10px;
 }
 
 div.tool .options {
-	background-color: #C0C0C0;
 	text-align: left;
 	padding: 10px;
 }
@@ -228,7 +229,7 @@ div.tool .options select {
 div.tool .build {
 	border: none;
 	background: none;
-	color: #FEFEFE;
+	color: #676767;
 	padding: 5px;
 	padding-left: 32px;
 	background-image: url('../images/hammer.png');
@@ -245,7 +246,7 @@ div.tool .build:hover {
 div.tool .classify {
 	border: none;
 	background: none;
-	color: #FEFEFE;
+	color: #676767;
 	padding: 5px;
 	padding-left: 32px;
 	background-image: url('../images/bars.png');

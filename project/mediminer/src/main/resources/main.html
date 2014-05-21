@@ -50,13 +50,15 @@
 		<div id="menu">
 			<nav>
 				<ul>
-					<li id="import-data" class="bubble-right">Import data</li>
+					<li id="import-data" class="bubble-right"
+						title="Imports data in CSV, XLS or ARFF format. First row has to contain headers, last column has to be decision class.">Import
+						data</li>
 					<li id="load-model" class="bubble-right dn">Load model</li>
 					<li id="save-model" class="bubble-right dn">Save model</li>
-					<li id="export-data-arff" class="bubble-right">Export to ARFF</li>
-					<li id="export-data-csv" class="bubble-right">Export to CSV</li>
-					<li id="export-data-xls" class="bubble-right">Export to XLS</li>
-					<li id="close" class="bubble-right">Close</li>
+					<li id="export-data-arff" class="bubble-right" title="Stores current data in ARFF file.">Export to ARFF</li>
+					<li id="export-data-csv" class="bubble-right" title="Stores current data in CSV file.">Export to CSV</li>
+					<li id="export-data-xls" class="bubble-right" title="Stores current data in XLS file.">Export to XLS</li>
+					<li id="close" class="bubble-right" title="Removes all temporary files and then close application.">Close</li>
 				</ul>
 			</nav>
 		</div>
@@ -76,7 +78,9 @@
 						<li id=selectAttr>Select attributes...</li>
 						<li id="discretize">Discretize</li>
 						<li id="normalize">Normalize</li>
-						<li id="hideUnselected"><label for="hideCheckbox">Hide unselected</label><input id="hideCheckbox" class="smallCheckbox" type="checkbox"></li>
+						<li id="hideUnselected"><label for="hideCheckbox">Hide
+								unselected</label><input id="hideCheckbox" class="smallCheckbox"
+							type="checkbox"></li>
 					</ul>
 					<ul id=selectAttrOptions>
 						<li id=all>&#9658; All</li>
@@ -119,7 +123,8 @@
 				<div class="tool">
 					<h3 id="naiveBayes">Naive Bayes Classifier</h3>
 					<div class="options">
-						<label id="estimateKernel">Estimate kernel?</label> <select id="option-naive-bayes">
+						<label id="estimateKernel">Estimate kernel?</label> <select
+							id="option-naive-bayes">
 							<option value="yes">Yes</option>
 							<option value="no">No</option>
 						</select>
@@ -134,7 +139,8 @@
 				<div class="tool">
 					<h3 id="j48">J48 Classifier</h3>
 					<div class="options">
-						<label id="confidenceLevel">Confidence level</label> <select id="option-j48">
+						<label id="confidenceLevel">Confidence level</label> <select
+							id="option-j48">
 							<option value="0.01">0.01</option>
 							<option value="0.02">0.02</option>
 							<option value="0.03">0.03</option>
@@ -180,7 +186,8 @@
 				<div class="tool">
 					<h3 id="dtnb">DTNB Classifier</h3>
 					<div class="options">
-						<label id="evaluationMeasure">Evalueation measure</label> <select id="option-dtnb">
+						<label id="evaluationMeasure">Evalueation measure</label> <select
+							id="option-dtnb">
 							<option value="rmse">RMSE</option>
 							<option value="mae">mae</option>
 							<option value="auc">AUC</option>

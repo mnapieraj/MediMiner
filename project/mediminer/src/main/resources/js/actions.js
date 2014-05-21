@@ -340,18 +340,21 @@ Actions.prototype.buildClassifier = function(classifier) {
 
     var actions = this;
 
-
     if ($('#data-table thead th input:checked').length < 1) {
 	actions.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
     } else {
 
 	var option = $('#option-' + classifier).val();
+	var attributes = actions.instances.selectedAttributes;
 
 	$('#classify-' + classifier).hide();
 
 	$.ajax({
 	    url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
-	    context : document.body
+	    context : document.body,
+	    data : {
+		"attributes" : attributes,
+	    }
 	}).done(function(data) {
 	    actions.showSuccess("Classifier is ready.");
 	    $('#build-' + classifier).text('Rebuild');
@@ -365,35 +368,12 @@ Actions.prototype.buildClassifier = function(classifier) {
 
     }
 
-    var option = $('#option-' + classifier).val();
-    var attributes = actions.instances.selectedAttributes;
-    
-    $('#classify-' + classifier).hide();
-
-    $.ajax({
-	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
-	context : document.body,
-	data : {
-	    "attributes" : attributes,
-	}
-    }).done(function(data) {
-	actions.showSuccess("Classifier is ready.");
-	$('#build-' + classifier).text('Rebuild');
-	$('#classify-' + classifier).fadeIn();
-    }).error(function(err, a, b) {
-	actions.showError("Classifier building failed");
-	console.log(err);
-	console.log(a);
-	console.log(b);
-    });
-
 }
 
 Actions.prototype.classifyAction = function(classifier) {
 
     var self = this;
     $('#classifyDialog table').empty();
-
 
     if ($('#data-table thead th input:checked').length < 1) {
 
@@ -473,14 +453,16 @@ Actions.prototype.classifyNew = function(classifier) {
 }
 
 Actions.prototype.close = function() {
-    self.showSuccess("Application closed, now you close the window.");
+
+    var self = this;
+
+    self.showSuccess("Application closed, now you can close the window.");
     $.ajax({
 	url : 'close',
 	context : document.body
     }).done(function(decision) {
-	self.showSuccess("Application closed, now you close the window.");
+	self.showSuccess("Application closed, now you can close the window.");
     }).error(function(err, a, b) {
-	self.showError("Closing error! Try again.");
 	console.log(err);
     });
 }
