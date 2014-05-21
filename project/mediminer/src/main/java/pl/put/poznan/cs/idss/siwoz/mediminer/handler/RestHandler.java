@@ -30,6 +30,7 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToXlsConve
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.DiscretizePreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.IPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.ExtractAttributesPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.IAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.InfoGainAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
@@ -71,6 +72,7 @@ public class RestHandler extends AbstractHandler {
 
 	private String currentDataFileName = null;
 	private Instances instancesContainer = null;
+	private Instances currentInstances = null;
 
 	private Map<String, Classifier> classifiers = new HashMap<>();
 
@@ -203,7 +205,7 @@ public class RestHandler extends AbstractHandler {
 			Map<String, String[]> parameters = request.getParameterMap();
 			String[] attributesStr = parameters.get("attributes[]");
 
-			int[] attributes = Utils.parseToIntList(attributesStr);
+			int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length);
 			IPreprocessor preprocessor = new DiscretizePreprocessor();
 			instancesContainer = preprocessor.preprocessForAttrNumbers(
 					instancesContainer, attributes);
@@ -473,7 +475,13 @@ public class RestHandler extends AbstractHandler {
 			HttpServletResponse response, String classifier, String option) {
 		try {
 
-			Instances currentInstances = reduceAttributes(instancesContainer);
+			Map<String, String[]> parameters = request.getParameterMap();
+			String[] attributesStr = parameters.get("attributes[]");
+			int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length + 1);
+			attributes[attributesStr.length] = instancesContainer.classIndex();
+			IPreprocessor preprocessor = new ExtractAttributesPreprocessor();
+			currentInstances = preprocessor.preprocessForAttrNumbers(
+					instancesContainer, attributes);
 
 			if ("naive-bayes".equals(classifier)) {
 
@@ -545,6 +553,7 @@ public class RestHandler extends AbstractHandler {
 			}
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setContentType("text/plain");
 			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			((Request) request).setHandled(true);
@@ -556,8 +565,6 @@ public class RestHandler extends AbstractHandler {
 	private void classify(HttpServletRequest request,
 			HttpServletResponse response, String classifier, String data) {
 		try {
-
-			Instances currentInstances = reduceAttributes(instancesContainer);
 
 			String[] values = data.split(SPLITTER);
 
@@ -606,16 +613,13 @@ public class RestHandler extends AbstractHandler {
 			response.getWriter().println(result);
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			response.setContentType("text/plain");
 			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
 			((Request) request).setHandled(true);
 		}
 
 		((Request) request).setHandled(true);
-	}
-
-	private Instances reduceAttributes(Instances instances) {
-		return new Instances(instances); // copy of instances
 	}
 
 }
