@@ -43,7 +43,7 @@ div#error-box {
 	background-color: #DD3322;
 	padding: 10px;
 	border-left: 220px solid #BB4433;
-	cursor : pointer;
+	cursor: pointer;
 }
 
 div#success-box {
@@ -51,7 +51,7 @@ div#success-box {
 	background-color: #44BB33;
 	padding: 10px;
 	border-left: 220px solid #559944;
-	cursor : pointer;
+	cursor: pointer;
 }
 
 div#menu {
@@ -147,8 +147,6 @@ div#main_part {
 	padding: 0px;
 }
 
-
-
 div#table-container {
 	height: 450px;
 	overflow: hidden;
@@ -182,10 +180,85 @@ div#toolbox {
 	float: right;
 }
 
+div.tool {
+	padding: 0px;
+	background-color: #989898;
+	color: #FAFAFA;
+	text-align: right;
+	margin-bottom: 8px;
+	opacity: 0.75;
+	transition-duration: 1.2s;
+}
+
+div.tool:hover {
+	opacity: 1.0;
+	transition-duration: 0.4s;
+}
+
+div.tool h3 {
+	margin: 0 auto;
+	text-align: center;
+	padding: 10px;
+}
+
+div.tool .options {
+	background-color: #C0C0C0;
+	text-align: left;
+	padding: 10px;
+}
+
+div.tool .options label {
+	float: left;
+	font-size: 14pt;
+}
+
+div.tool .options select {
+	float: right;
+	padding: 4px;
+	margin: 0px;
+	border: none;
+	background-color: #FFFFFF;
+	border: none;
+}
+
+div.tool .build {
+	border: none;
+	background: none;
+	color: #FEFEFE;
+	padding: 5px;
+	padding-left: 32px;
+	background-image: url('../images/hammer.png');
+	background-repeat: no-repeat;
+	background-position: 10px 7px;
+	font-size: 14pt;
+	opacity: 0.8;
+}
+
+div.tool .build:hover {
+	opacity: 1.0;
+}
+
+div.tool .classify {
+	border: none;
+	background: none;
+	color: #FEFEFE;
+	padding: 5px;
+	padding-left: 32px;
+	background-image: url('../images/bars.png');
+	background-repeat: no-repeat;
+	background-position: 10px 7px;
+	font-size: 14pt;
+	opacity: 0.8;
+}
+
+div.tool .classify:hover {
+	opacity: 1.0;
+}
+
 #preprocessToolbox {
 	margin: 0px 10px;
 	padding: 0px;
-	font-size : 14px;
+	font-size: 14px;
 }
 
 #preprocessToolbox li {
@@ -197,38 +270,37 @@ div#toolbox {
 }
 
 #preprocessToolbox li:hover {
-	border-color : #939393;
+	border-color: #939393;
 }
 
 #selectAttrOptions {
-	max-width : 247px; 
-	border : 1px solid #C0C0C0;
-	border-top : none;
+	max-width: 247px;
+	border: 1px solid #C0C0C0;
+	border-top: none;
 }
 
 #selectAttrOptions li {
-	display : table-cell;
-	width : 75px;
-	border : none;
-	background-color : white;
+	display: table-cell;
+	width: 75px;
+	border: none;
+	background-color: white;
 	font-family: sans-serif;
-font-size: 11px;
-
+	font-size: 11px;
 }
 
 #selectAttrOptions li:hover {
-	background-color : rgba(15, 12, 12, 0.17) !important;
+	background-color: rgba(15, 12, 12, 0.17) !important;
 }
 
 .smallCheckbox {
-	margin : 0 0 0 5px !important;
-	width : 10px !important;
-	height : 10px !important;
+	margin: 0 0 0 5px !important;
+	width: 10px !important;
+	height: 10px !important;
 }
 
 .ui-dialog {
-	font-size : 8pt;
-	width : 250px !important;
+	font-size: 8pt;
+	width: 250px !important;
 }
 
 footer {
@@ -254,5 +326,5 @@ footer {
 }
 
 .hidden {
-	display : none !important;
+	display: none !important;
 }

@@ -1,6 +1,5 @@
 package pl.put.poznan.cs.idss.siwoz.mediminer.handler;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +33,7 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.IAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.InfoGainAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
+import weka.classifiers.Classifier;
 import weka.classifiers.bayes.NaiveBayes;
 import weka.classifiers.lazy.IBk;
 import weka.classifiers.rules.DTNB;
@@ -64,17 +64,15 @@ public class RestHandler extends AbstractHandler {
 	public static String KEY = Double
 			.toString(Math.round(Math.random() * 100000));
 
+	public static String SPLITTER = ":Medi|Miner|Data:";
+
 	private static final MultipartConfigElement MULTI_PART_CONFIG = new MultipartConfigElement(
 			System.getProperty("user.dir"));
 
 	private String currentDataFileName = null;
-	private String currentModelFileName = null;
 	private Instances instancesContainer = null;
 
-	private NaiveBayes naiveBayesClassifier = null;
-	private J48 j48Classifier = null;
-	private IBk ibkClassifier = null;
-	private DTNB dtnbClassifier = null;
+	private Map<String, Classifier> classifiers = new HashMap<>();
 
 	public void handle(String target, Request baseRequest,
 			HttpServletRequest request, HttpServletResponse response)
@@ -111,7 +109,7 @@ public class RestHandler extends AbstractHandler {
 
 			} else if (action.equals("get-class-labels")) {
 				getClassLabels(request, response);
-				
+
 			} else if (action.equals("export-arff")) {
 
 				exportArff(request, response);
@@ -144,6 +142,13 @@ public class RestHandler extends AbstractHandler {
 				String option = params.get("option")[0];
 
 				buildClassifier(request, response, classifier, option);
+
+			} else if (action.equals("classify")) {
+
+				String classifier = params.get("classifier")[0];
+				String data = params.get("data")[0];
+
+				classify(request, response, classifier, data);
 
 			} else {
 
@@ -468,40 +473,71 @@ public class RestHandler extends AbstractHandler {
 			HttpServletResponse response, String classifier, String option) {
 		try {
 
+			Instances currentInstances = reduceAttributes(instancesContainer);
+
 			if ("naive-bayes".equals(classifier)) {
 
-				naiveBayesClassifier = new NaiveBayes();
+				Classifier naiveBayesClassifier;
+
+				if (!classifiers.containsKey("naive-bayes")) {
+					classifiers.put("naive-bayes", new NaiveBayes());
+				}
+
+				naiveBayesClassifier = classifiers.get("naive-bayes");
+
 				if ("yes".equals(option)) {
 					naiveBayesClassifier.setOptions(new String[] { "-K" });
 				}
-				naiveBayesClassifier.buildClassifier(instancesContainer);
+
+				naiveBayesClassifier.buildClassifier(currentInstances);
 				response.getWriter().println(naiveBayesClassifier.toString());
 
 			} else if ("j48".equals(classifier)) {
 
-				j48Classifier = new J48();
+				Classifier j48Classifier;
+
+				if (!classifiers.containsKey("j48")) {
+					classifiers.put("j48", new J48());
+				}
+
+				j48Classifier = classifiers.get("j48");
+
 				if (option != null) {
 					j48Classifier.setOptions(new String[] { "-C", option });
 				}
-				j48Classifier.buildClassifier(instancesContainer);
+				j48Classifier.buildClassifier(currentInstances);
 				response.getWriter().println(j48Classifier.toString());
 
 			} else if ("ibk".equals(classifier)) {
 
-				ibkClassifier = new IBk();
+				Classifier ibkClassifier;
+
+				if (!classifiers.containsKey("ibk")) {
+					classifiers.put("ibk", new IBk());
+				}
+
+				ibkClassifier = classifiers.get("ibk");
+
 				if (option != null) {
 					ibkClassifier.setOptions(new String[] { "-K", option });
 				}
-				ibkClassifier.buildClassifier(instancesContainer);
+				ibkClassifier.buildClassifier(currentInstances);
 				response.getWriter().println(ibkClassifier.toString());
 
 			} else if ("dtnb".equals(classifier)) {
 
-				dtnbClassifier = new DTNB();
+				Classifier dtnbClassifier;
+
+				if (!classifiers.containsKey("dtnb")) {
+					classifiers.put("dtnb", new DTNB());
+				}
+
+				dtnbClassifier = classifiers.get("dtnb");
+
 				if (option != null) {
 					dtnbClassifier.setOptions(new String[] { "-E", option });
 				}
-				dtnbClassifier.buildClassifier(instancesContainer);
+				dtnbClassifier.buildClassifier(currentInstances);
 				response.getWriter().println(dtnbClassifier.toString());
 
 			} else {
@@ -515,6 +551,67 @@ public class RestHandler extends AbstractHandler {
 		}
 
 		((Request) request).setHandled(true);
+	}
+
+	private void classify(HttpServletRequest request,
+			HttpServletResponse response, String classifier, String data) {
+		try {
+
+			Instances currentInstances = reduceAttributes(instancesContainer);
+
+			String[] values = data.split(SPLITTER);
+
+			Instance instance = new Instance(currentInstances.firstInstance());
+
+			for (int i = 0; i < values.length; i++) {
+
+				if (values[i] != null && !values[i].isEmpty()) {
+
+					try {
+						instance.setValue(i, Double.parseDouble(values[i]));
+					} catch (NumberFormatException e) {
+						instance.setValue(i, values[i].toString());
+					}
+
+				}
+
+			}
+
+			Double result = 0.0;
+
+			Classifier c = null;
+
+			if ("naive-bayes".equals(classifier)) {
+				c = classifiers.get("naive-bayes");
+			} else if ("j48".equals(classifier)) {
+				c = classifiers.get("j48");
+			} else if ("ibk".equals(classifier)) {
+				c = classifiers.get("ibk");
+			} else if ("dtnb".equals(classifier)) {
+				c = classifiers.get("dtnb");
+			} else {
+				throw new Exception("Incorrect classifier name");
+			}
+
+			if (c == null) {
+				throw new Exception("Classifier is not built");
+			}
+
+			result = c.classifyInstance(instance);
+
+			response.getWriter().println(result.toString());
+
+		} catch (Exception e) {
+			response.setContentType("text/plain");
+			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+			((Request) request).setHandled(true);
+		}
+
+		((Request) request).setHandled(true);
+	}
+
+	private Instances reduceAttributes(Instances instances) {
+		return new Instances(instances); // copy of instances
 	}
 
 }
