@@ -82,6 +82,7 @@ Actions.prototype.normalize = function() {
 
     }).done(function(data) {
 	self.instances.modifyInstances(JSON.parse(data));
+	self.instances.setClassLabels(self.instances.labels);
     }).error(function(err, a, b) {
 	self.showError("An error occured during normalization. Please try again.");
     });
@@ -339,6 +340,7 @@ Actions.prototype.buildClassifier = function(classifier) {
 
     var actions = this;
 
+
     if ($('#data-table thead th input:checked').length < 1) {
 	actions.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
     } else {
@@ -362,6 +364,29 @@ Actions.prototype.buildClassifier = function(classifier) {
 	});
 
     }
+
+    var option = $('#option-' + classifier).val();
+    var attributes = actions.instances.selectedAttributes;
+    
+    $('#classify-' + classifier).hide();
+
+    $.ajax({
+	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
+	context : document.body,
+	data : {
+	    "attributes" : attributes,
+	}
+    }).done(function(data) {
+	actions.showSuccess("Classifier is ready.");
+	$('#build-' + classifier).text('Rebuild');
+	$('#classify-' + classifier).fadeIn();
+    }).error(function(err, a, b) {
+	actions.showError("Classifier building failed");
+	console.log(err);
+	console.log(a);
+	console.log(b);
+    });
+
 }
 
 Actions.prototype.classifyAction = function(classifier) {
@@ -369,7 +394,9 @@ Actions.prototype.classifyAction = function(classifier) {
     var self = this;
     $('#classifyDialog table').empty();
 
+
     if ($('#data-table thead th input:checked').length < 1) {
+
 	self.showError("You have to choose at least one attribute. If you don't know which should be selected, use option: Select attributes - The best.")
     } else {
 
