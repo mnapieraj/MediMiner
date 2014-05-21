@@ -81,6 +81,7 @@ Actions.prototype.normalize = function() {
 
     }).done(function(data) {
 	self.instances.modifyInstances(JSON.parse(data));
+	self.instances.setClassLabels(self.instances.labels);
     }).error(function(err, a, b) {
 	self.showError("An error occured during normalization. Please try again.");
     });
@@ -339,12 +340,16 @@ Actions.prototype.buildClassifier = function(classifier) {
     var actions = this;
 
     var option = $('#option-' + classifier).val();
-
+    var attributes = actions.instances.selectedAttributes;
+    
     $('#classify-' + classifier).hide();
 
     $.ajax({
 	url : 'rest?action=build&classifier=' + classifier + '&option=' + option,
-	context : document.body
+	context : document.body,
+	data : {
+	    "attributes" : attributes,
+	}
     }).done(function(data) {
 	actions.showSuccess("Classifier is ready.");
 	$('#build-' + classifier).text('Rebuild');
