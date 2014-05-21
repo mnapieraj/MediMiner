@@ -3,6 +3,7 @@ function Instances(tableId) {
 	// atrybuty indeksowane od 0
 	this.selectedAttributes = [];
 	this.unselectedVisible = true;
+	this.labels = null;
 };
 
 Instances.prototype.addOptionsToHeaders = function() {
@@ -110,6 +111,7 @@ Instances.prototype.modifyInstances = function(data) {
 };
 
 Instances.prototype.setClassLabels = function (labels) {
+	this.labels = labels;
 	var classCells = this.table.find("tbody").find("td:last-child");
 	$.each(classCells, function (idx, cell) {
 		var cellVal = parseInt($(cell).text());
