@@ -228,7 +228,15 @@ Actions.prototype.loadInstances = function() {
     $('div#table-container').css('background-position', 'center center');
     $('div#table-container').css('background-repeat', 'no-repeat');
 
-    var keyOf = function(array, v) {
+    var keyOf = function(data, v) {
+	var array;
+	if (data.length !== undefined) {
+	    array = data;
+	} else {
+	    array = $.map(data, function(value, index) {
+		return [ value ];
+	    });
+	}
 	for (var k = 0; k < array.length; k++) {
 	    if (array[k] == v) {
 		return k;
@@ -240,37 +248,46 @@ Actions.prototype.loadInstances = function() {
 	dataType : 'json',
 	url : 'rest?action=get-instances',
 	context : document.body
-    }).done(function(data) {
-	$.each(data, function(i, item) {
-	    var row = '<tr>';
-	    if (item.m_NumAttributes !== undefined) {
-		for (var i = 0; i < item.m_NumAttributes; i++) {
-		    if ($.inArray(i, item.m_Indices) > -1) {
-			row += '<td>' + item.m_AttValues[keyOf(item.m_Indices, i)] + '</td>';
-
+    }).done(
+	    function(data) {
+		$.each(data, function(i, item) {
+		    var row = '<tr>';
+		    if (item.m_NumAttributes !== undefined) {
+			for (var i = 0; i < item.m_NumAttributes; i++) {
+			    if ($.inArray(i, item.m_Indices) > -1) {
+				row += '<td>' + item.m_AttValues[keyOf(item.m_Indices, i)] + '</td>';
+			    } else {
+				row += '<td>' + '-' + '</td>';
+			    }
+			}
+			row += '</tr>';
+			$('#data-table tbody').append(row);
 		    } else {
-			row += '<td>' + '-' + '</td>';
+			for (var i = 0; i < item.m_AttValues.length; i++) {
+
+			    if (item.m_Dataset.m_Attributes.m_Objects[i].m_Hashtable !== undefined) {
+				var valuesArray = $.map(item.m_Dataset.m_Attributes.m_Objects[i].m_Hashtable, function(value, index) {
+				    return [index];
+				});
+				row += '<td>'
+					+ valuesArray[keyOf(item.m_Dataset.m_Attributes.m_Objects[i].m_Hashtable,
+						item.m_AttValues[i])] + '</td>';
+			    } else {
+				row += '<td>' + item.m_AttValues[i] + '</td>';
+			    }
+
+			}
+			row += '</tr>';
+			$('#data-table tbody').append(row);
 		    }
-		}
-		row += '</tr>';
-		$('#data-table tbody').append(row);
-	    } else {
-		for (var i = 0; i < item.m_AttValues.length; i++) {
-
-		    row += '<td>' + item.m_AttValues[i] + '</td>';
-
-		}
-		row += '</tr>';
-		$('#data-table tbody').append(row);
-	    }
-	});
-	$('#data-table').show();
-	$('div#table-container').css('overflow', 'scroll');
-	$('div#table-container').css('background-image', 'none');
-	actions.showSuccess(data.length + " instances have been loaded.");
-	actions.loadClassLabels();
-	actions.instances.table.find("td:last-child").addClass('selected');
-    }).error(function(err, a, b) {
+		});
+		$('#data-table').show();
+		$('div#table-container').css('overflow', 'scroll');
+		$('div#table-container').css('background-image', 'none');
+		actions.showSuccess(data.length + " instances have been loaded.");
+		actions.loadClassLabels();
+		actions.instances.table.find("td:last-child").addClass('selected');
+	    }).error(function(err, a, b) {
 	$('div#table-container').css('background-image', 'none');
 	actions.showError("You have to open model or import any data file.");
     });

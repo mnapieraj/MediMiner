@@ -28,9 +28,9 @@ import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToArffConv
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToCSVConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver.InstancesToXlsConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.DiscretizePreprocessor;
+import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.ExtractAttributesPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.IPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.NormalizePreprocesor;
-import pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor.ExtractAttributesPreprocessor;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.IAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.selector.InfoGainAttributeSelector;
 import pl.put.poznan.cs.idss.siwoz.mediminer.utils.Utils;
@@ -40,6 +40,7 @@ import weka.classifiers.lazy.IBk;
 import weka.classifiers.rules.DTNB;
 import weka.classifiers.trees.J48;
 import weka.core.Attribute;
+import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
 
@@ -205,7 +206,8 @@ public class RestHandler extends AbstractHandler {
 			Map<String, String[]> parameters = request.getParameterMap();
 			String[] attributesStr = parameters.get("attributes[]");
 
-			int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length);
+			int[] attributes = Utils.parseToIntList(attributesStr,
+					attributesStr.length);
 			IPreprocessor preprocessor = new DiscretizePreprocessor();
 			instancesContainer = preprocessor.preprocessForAttrNumbers(
 					instancesContainer, attributes);
@@ -243,12 +245,12 @@ public class RestHandler extends AbstractHandler {
 
 						@Override
 						public boolean shouldSkipField(FieldAttributes field) {
-							return field.getName().equals("m_Dataset");
+							return field.getName().equals("m_Instances");
 						}
 
 						@Override
 						public boolean shouldSkipClass(Class<?> clazz) {
-							return clazz == Instances.class;
+							return false;//clazz == FastVector.class;
 						}
 					}).create();
 
@@ -477,11 +479,12 @@ public class RestHandler extends AbstractHandler {
 
 			Map<String, String[]> parameters = request.getParameterMap();
 			String[] attributesStr = parameters.get("attributes[]");
-			int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length + 1);
+			int[] attributes = Utils.parseToIntList(attributesStr,
+					attributesStr.length + 1);
 			attributes[attributesStr.length] = instancesContainer.classIndex();
 			IPreprocessor preprocessor = new ExtractAttributesPreprocessor();
 			currentInstances = preprocessor.preprocessForAttrNumbers(
-			instancesContainer, attributes);
+					instancesContainer, attributes);
 
 			if ("naive-bayes".equals(classifier)) {
 
