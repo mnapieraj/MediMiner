@@ -132,7 +132,7 @@ Actions.prototype.selectBest = function() {
 	self.instances.selectAttributes(attributes);
 
     }).error(function(err, a, b) {
-	self.showError("An error occured during selecting attributes. Please try again.");
+	self.showError(err.responseText);
     });
 }
 
@@ -392,7 +392,7 @@ Actions.prototype.buildClassifier = function(classifier) {
 	    $('#build-' + classifier).text('Rebuild');
 	    $('#classify-' + classifier).fadeIn();
 	}).error(function(err, a, b) {
-	    actions.showError("Classifier building failed");
+	    actions.showError("Classifier building failed: " + err.responseText);
 	    console.log(err);
 	    console.log(a);
 	    console.log(b);
