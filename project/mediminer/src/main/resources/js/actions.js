@@ -297,9 +297,14 @@ Actions.prototype.downloadArff = function() {
 
     var actions = this;
 
+    var attributes = actions.instances.selectedAttributes;
+    
     $.ajax({
 	url : 'rest?action=export-arff',
-	context : document.body
+	context : document.body,
+    data : {
+		"attributes" : attributes,
+	    }
     }).done(function(data) {
 	$('a#download-arff').attr('href', './files/' + data);
 	$('a#download-arff').get(0).click();
@@ -317,9 +322,14 @@ Actions.prototype.downloadCsv = function() {
 
     var actions = this;
 
+    var attributes = actions.instances.selectedAttributes;
+    
     $.ajax({
 	url : 'rest?action=export-csv',
-	context : document.body
+	context : document.body,
+    data : {
+		"attributes" : attributes,
+	    }
     }).done(function(data) {
 	$('a#download-csv').attr('href', './files/' + data);
 	$('a#download-csv').get(0).click();
@@ -337,9 +347,14 @@ Actions.prototype.downloadXls = function() {
 
     var actions = this;
 
+    var attributes = actions.instances.selectedAttributes;
+    
     $.ajax({
 	url : 'rest?action=export-xls',
-	context : document.body
+	context : document.body,
+    data : {
+		"attributes" : attributes,
+	    }
     }).done(function(data) {
 	$('a#download-xls').attr('href', './files/' + data);
 	$('a#download-xls').get(0).click();

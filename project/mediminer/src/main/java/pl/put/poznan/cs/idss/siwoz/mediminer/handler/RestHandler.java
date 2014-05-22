@@ -113,17 +113,9 @@ public class RestHandler extends AbstractHandler {
 			} else if (action.equals("get-class-labels")) {
 				getClassLabels(request, response);
 
-			} else if (action.equals("export-arff")) {
+			} else if (action.startsWith("export-")) {
 
-				exportArff(request, response);
-
-			} else if (action.equals("export-xls")) {
-
-				exportXls(request, response);
-
-			} else if (action.equals("export-csv")) {
-
-				exportCsv(request, response);
+				export(request, response, action.split("export-")[1]);
 
 			} else if (action.equals("discretize")) {
 
@@ -211,6 +203,7 @@ public class RestHandler extends AbstractHandler {
 			IPreprocessor preprocessor = new DiscretizePreprocessor();
 			instancesContainer = preprocessor.preprocessForAttrNumbers(
 					instancesContainer, attributes);
+			
 			Map<Integer, String[]> result = new HashMap<>();
 			for (int attr : attributes) {
 				result.put(attr, new String[instancesContainer.numInstances()]);
@@ -332,9 +325,26 @@ public class RestHandler extends AbstractHandler {
 		((Request) request).setHandled(true);
 	}
 
-	private void exportArff(HttpServletRequest request,
-			HttpServletResponse response) {
-
+	private void updateCurrentInstances(HttpServletRequest request) throws Exception {
+		Map<String, String[]> parameters = request.getParameterMap();
+		String[] attributesStr = parameters.get("attributes[]");
+		if(attributesStr == null || attributesStr.length == 0) {
+			currentInstances = null;
+			return;
+		}
+		int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length + 1);
+		attributes[attributesStr.length] = instancesContainer.classIndex();
+		IPreprocessor preprocessor = new ExtractAttributesPreprocessor();
+		currentInstances = preprocessor.preprocessForAttrNumbers(
+		instancesContainer, attributes);
+	}
+	
+	
+	private void export(HttpServletRequest request,
+			HttpServletResponse response, String extension) {
+		
+		Instances instancesToSave = null;
+		
 		String filePath = "";
 
 		try {
@@ -343,12 +353,15 @@ public class RestHandler extends AbstractHandler {
 				throw new Exception("There is not file loaded");
 			}
 
-			IFromInstancesConverter arffConverter = new InstancesToArffConverter();
+			updateCurrentInstances(request);
+			instancesToSave = currentInstances == null ? instancesContainer : currentInstances;
+			
+			IFromInstancesConverter converter = getConverter(extension);
 			Date now = new Date();
 			filePath = "MediMiner_"
 					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
-					+ ".arff";
-			arffConverter.parseFromInstances(instancesContainer, filePath);
+					+ "." + extension;
+			converter.parseFromInstances(instancesToSave, filePath);
 			response.getWriter().println(filePath);
 		} catch (Exception e) {
 			response.setContentType("text/plain");
@@ -358,66 +371,21 @@ public class RestHandler extends AbstractHandler {
 
 		((Request) request).setHandled(true);
 	}
-
-	private void exportCsv(HttpServletRequest request,
-			HttpServletResponse response) {
-
-		String filePath = "";
-
-		try {
-
-			if (instancesContainer == null) {
-				throw new Exception("There is not file loaded");
-			}
-
-			IFromInstancesConverter csvConverter = new InstancesToCSVConverter();
-			Date now = new Date();
-			filePath = "MediMiner_"
-					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
-					+ ".csv";
-			csvConverter.parseFromInstances(instancesContainer, filePath);
-			response.getWriter().println(filePath);
-		} catch (Exception e) {
-			response.setContentType("text/plain");
-			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			((Request) request).setHandled(true);
+	
+	private IFromInstancesConverter getConverter(String extension) {
+		if(extension.equals("arff")) {
+			return new InstancesToArffConverter();
 		}
-
-		((Request) request).setHandled(true);
+		if(extension.equals("csv")) {
+			return new InstancesToCSVConverter();
+		}
+		if(extension.equals("xls")) {
+			return new InstancesToXlsConverter();
+		}
+		
+		return null;
 	}
 
-	private void exportXls(HttpServletRequest request,
-			HttpServletResponse response) {
-
-		String filePath = "";
-
-		try {
-
-			if (instancesContainer == null) {
-				throw new Exception("There is not file loaded");
-			}
-
-			IFromInstancesConverter xlsConverter = new InstancesToXlsConverter();
-			Date now = new Date();
-			filePath = "MediMiner_"
-					+ new SimpleDateFormat("dd-MM-yyyy_HH-mm-ss").format(now)
-					+ ".xls";
-			xlsConverter.parseFromInstances(instancesContainer, filePath);
-			response.getWriter().println(filePath);
-		} catch (Exception e) {
-			response.setContentType("text/plain");
-			response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
-			((Request) request).setHandled(true);
-		}
-
-		((Request) request).setHandled(true);
-	}
-
-	// private void openFile(HttpServletRequest request,
-	// HttpServletResponse response, Map<String, String[]> params,
-	// String action) {
-	//
-	// }
 
 	private void importFile(HttpServletRequest request,
 			HttpServletResponse response, Map<String, String[]> params,
