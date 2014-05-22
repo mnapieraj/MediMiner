@@ -203,7 +203,7 @@ public class RestHandler extends AbstractHandler {
 			IPreprocessor preprocessor = new DiscretizePreprocessor();
 			instancesContainer = preprocessor.preprocessForAttrNumbers(
 					instancesContainer, attributes);
-			
+
 			Map<Integer, String[]> result = new HashMap<>();
 			for (int attr : attributes) {
 				result.put(attr, new String[instancesContainer.numInstances()]);
@@ -243,7 +243,7 @@ public class RestHandler extends AbstractHandler {
 
 						@Override
 						public boolean shouldSkipClass(Class<?> clazz) {
-							return false;//clazz == FastVector.class;
+							return false;// clazz == FastVector.class;
 						}
 					}).create();
 
@@ -325,26 +325,27 @@ public class RestHandler extends AbstractHandler {
 		((Request) request).setHandled(true);
 	}
 
-	private void updateCurrentInstances(HttpServletRequest request) throws Exception {
+	private void updateCurrentInstances(HttpServletRequest request)
+			throws Exception {
 		Map<String, String[]> parameters = request.getParameterMap();
 		String[] attributesStr = parameters.get("attributes[]");
-		if(attributesStr == null || attributesStr.length == 0) {
+		if (attributesStr == null || attributesStr.length == 0) {
 			currentInstances = null;
 			return;
 		}
-		int[] attributes = Utils.parseToIntList(attributesStr, attributesStr.length + 1);
+		int[] attributes = Utils.parseToIntList(attributesStr,
+				attributesStr.length + 1);
 		attributes[attributesStr.length] = instancesContainer.classIndex();
 		IPreprocessor preprocessor = new ExtractAttributesPreprocessor();
 		currentInstances = preprocessor.preprocessForAttrNumbers(
-		instancesContainer, attributes);
+				instancesContainer, attributes);
 	}
-	
-	
+
 	private void export(HttpServletRequest request,
 			HttpServletResponse response, String extension) {
-		
+
 		Instances instancesToSave = null;
-		
+
 		String filePath = "";
 
 		try {
@@ -354,8 +355,9 @@ public class RestHandler extends AbstractHandler {
 			}
 
 			updateCurrentInstances(request);
-			instancesToSave = currentInstances == null ? instancesContainer : currentInstances;
-			
+			instancesToSave = currentInstances == null ? instancesContainer
+					: currentInstances;
+
 			IFromInstancesConverter converter = getConverter(extension);
 			Date now = new Date();
 			filePath = "MediMiner_"
@@ -371,21 +373,20 @@ public class RestHandler extends AbstractHandler {
 
 		((Request) request).setHandled(true);
 	}
-	
+
 	private IFromInstancesConverter getConverter(String extension) {
-		if(extension.equals("arff")) {
+		if (extension.equals("arff")) {
 			return new InstancesToArffConverter();
 		}
-		if(extension.equals("csv")) {
+		if (extension.equals("csv")) {
 			return new InstancesToCSVConverter();
 		}
-		if(extension.equals("xls")) {
+		if (extension.equals("xls")) {
 			return new InstancesToXlsConverter();
 		}
-		
+
 		return null;
 	}
-
 
 	private void importFile(HttpServletRequest request,
 			HttpServletResponse response, Map<String, String[]> params,
@@ -541,6 +542,8 @@ public class RestHandler extends AbstractHandler {
 
 			Instance instance = new Instance(currentInstances.firstInstance());
 
+			instance.setDataset(currentInstances);
+
 			for (int i = 0; i < values.length; i++) {
 
 				if (values[i] != null && !values[i].isEmpty()) {
@@ -576,8 +579,6 @@ public class RestHandler extends AbstractHandler {
 			if (c == null) {
 				throw new Exception("Classifier is not built");
 			}
-
-			instance.setDataset(currentInstances);
 
 			result = c.classifyInstance(instance);
 
