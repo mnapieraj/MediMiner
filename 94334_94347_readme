@@ -1,0 +1,5 @@
+student : Lewandowski Kornel, Napieraj Małgorzata
+index : 94334, 94347
+year : 2014
+project : mediminer
+desc : Narzędzie eksploracji danych pozwalające na klasyfikację zbioru danych dowolnym z dostępnych algorytmów oraz na wstępne przetwarzanie zbioru wejściowego (selekcja atrybutów, normalizacja, dyskretyzacja).
