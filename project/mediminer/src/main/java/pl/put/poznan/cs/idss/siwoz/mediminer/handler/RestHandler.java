@@ -43,6 +43,7 @@ import weka.core.Attribute;
 import weka.core.FastVector;
 import weka.core.Instance;
 import weka.core.Instances;
+import weka.core.UnsupportedAttributeTypeException;
 
 import com.google.gson.ExclusionStrategy;
 import com.google.gson.FieldAttributes;
@@ -170,7 +171,10 @@ public class RestHandler extends AbstractHandler {
 			Gson gson = new Gson();
 			String resultStr = gson.toJson(rankedAttributes);
 			response.getWriter().println(resultStr);
-		} catch (Exception e) {
+		} catch (UnsupportedAttributeTypeException e) {
+			returnError(request, response, null, "Cannot handle numeric class. Please discretize class attribute.");
+		}
+		catch (Exception e) {
 			e.printStackTrace();
 			returnError(request, response, null, "Select attributes error");
 		}
