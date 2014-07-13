@@ -1,3 +1,6 @@
+/**
+ * @author mnapieraj
+ */
 package pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader;
 
 import java.io.File;
@@ -22,7 +25,6 @@ public class XlsToInstancesConverter implements IToInstancesConverter {
 		File csvFile = parseXlsToCsv(fileName);
 		Instances instances = converter.parseToInstances(csvFile
 				.getAbsolutePath());
-	//	csvFile.deleteOnExit();
 		return instances;
 	}
 

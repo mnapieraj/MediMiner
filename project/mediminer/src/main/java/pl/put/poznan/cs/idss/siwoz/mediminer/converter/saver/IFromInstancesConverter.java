@@ -1,3 +1,6 @@
+/**
+ * @author mnapieraj
+ */
 package pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver;
 
 import java.io.File;

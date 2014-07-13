@@ -1,7 +1,8 @@
-package pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader;
+/**
+ * @author mnapieraj
+ */
 
-import java.io.File;
-import java.io.IOException;
+package pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader;
 
 import weka.core.Instances;
 

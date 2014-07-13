@@ -1,3 +1,6 @@
+/**
+ * @author mnapieraj
+ */
 package pl.put.poznan.cs.idss.siwoz.mediminer.converter.saver;
 
 import java.io.File;
@@ -7,7 +10,6 @@ import weka.core.Instance;
 import weka.core.Instances;
 import weka.core.converters.*;
 
-;
 
 public class InstancesToCSVConverter implements IFromInstancesConverter {
 

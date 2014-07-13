@@ -1,5 +1,8 @@
-package pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor;
 
+/**
+ * @author mnapieraj
+ */
+package pl.put.poznan.cs.idss.siwoz.mediminer.preprocessor;
 
 import weka.core.Instances;
 import weka.filters.Filter;

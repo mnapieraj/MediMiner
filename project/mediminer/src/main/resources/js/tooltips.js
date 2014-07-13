@@ -1,3 +1,6 @@
+/**
+ * @author mnapieraj
+ */
 var Tooltips =
 		(function() {
 			return {

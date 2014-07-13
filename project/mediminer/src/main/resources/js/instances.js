@@ -1,3 +1,6 @@
+/**
+ * @author mnapieraj
+ */
 function Instances(tableId) {
 	this.table = $("#" + tableId);
 	// atrybuty indeksowane od 0

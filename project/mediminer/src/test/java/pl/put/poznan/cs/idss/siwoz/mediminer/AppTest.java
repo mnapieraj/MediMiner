@@ -1,7 +1,7 @@
+/**
+ * @author mnapieraj
+ */
 package pl.put.poznan.cs.idss.siwoz.mediminer;
-
-import java.io.File;
-import java.util.Random;
 
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader.ArffToInstancesConverter;
 import pl.put.poznan.cs.idss.siwoz.mediminer.converter.loader.CSVToInstancesConverter;
